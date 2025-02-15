@@ -400,7 +400,7 @@ void AVLTree<T>::inorder(Node *node, std::vector<T> &result) const
     if (node)
     {
         inorder(node->left, result);
-        for (int i = 0; i < node->count; ++i)
+        for (unsigned int i = 0; i < node->count; ++i)
         {
             result.push_back(node->key);
         }
