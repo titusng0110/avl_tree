@@ -8,7 +8,7 @@
 std::vector<int> generate_random_integers(size_t count) {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dis(-2147483647, 2147483647);
+    std::uniform_int_distribution<int> dis(0, 100000);
     
     std::vector<int> result;
     result.reserve(count);
@@ -39,7 +39,7 @@ void run_performance_test(size_t data_size) {
     std::cout << std::string(75, '-') << std::endl;
 
     // Generate test data
-    std::vector<int> data = generate_random_integers(data_size);
+    const std::vector<int> data = generate_random_integers(data_size);
     
     // Test init_from_vector (10 times)
     {
@@ -83,6 +83,11 @@ void run_performance_test(size_t data_size) {
                   << std::setw(25) << set_time << std::endl;
     }
 
+    avl.clear();
+    set.clear();
+    avl.init_from_vector(data);
+    set.insert(data.begin(), data.end());
+
     // Test insert_multiple (50000 operations)
     {
         auto test_data = generate_random_integers(50000);
@@ -116,6 +121,11 @@ void run_performance_test(size_t data_size) {
                 << std::setw(25) << set_time << std::endl;
     }
 
+    avl.clear();
+    set.clear();
+    avl.init_from_vector(data);
+    set.insert(data.begin(), data.end());
+
     // Test remove (50000 operations)
     {
         auto test_data = generate_random_integers(50000);
@@ -134,6 +144,11 @@ void run_performance_test(size_t data_size) {
                   << std::setw(25) << avl_time 
                   << std::setw(25) << set_time << std::endl;
     }
+
+    avl.clear();
+    set.clear();
+    avl.init_from_vector(data);
+    set.insert(data.begin(), data.end());
 
     // Test remove_multiple (50000 operations)
     {
@@ -168,6 +183,11 @@ void run_performance_test(size_t data_size) {
                 << std::setw(25) << avl_time 
                 << std::setw(25) << set_time << std::endl;
     }
+
+    avl.clear();
+    set.clear();
+    avl.init_from_vector(data);
+    set.insert(data.begin(), data.end());
 
     // Test min/max operations (50000 operations)
     {
@@ -211,21 +231,47 @@ void run_performance_test(size_t data_size) {
                   << std::setw(25) << set_time << std::endl;
     }
 
+    avl.clear();
+    set.clear();
+    avl.init_from_vector(data);
+    set.insert(data.begin(), data.end());
+
+    // Test lower_bound operations (50000 operations)
     {
         auto test_data = generate_random_integers(50000);
         Timer t1;
         for (int val : test_data) {
-            auto it = avl.lower_bound(val);  // Testing lower_bound
+            auto it = avl.lower_bound(val);  
         }
         double avl_time = t1.elapsed();
         
         Timer t2;
         for (int val : test_data) {
-            auto it = set.lower_bound(val);  // STL set lower_bound
+            auto it = set.lower_bound(val);
         }
         double set_time = t2.elapsed();
         
         std::cout << std::setw(25) << "lower_bound 50000 ops" 
+                  << std::setw(25) << avl_time 
+                  << std::setw(25) << set_time << std::endl;
+    }
+
+    // Test count operations (50000 operations)
+    {
+        auto test_data = generate_random_integers(50000);
+        Timer t1;
+        for (int val : test_data) {
+            avl.count(val);
+        }
+        double avl_time = t1.elapsed();
+        
+        Timer t2;
+        for (int val : test_data) {
+            set.count(val);
+        }
+        double set_time = t2.elapsed();
+        
+        std::cout << std::setw(25) << "count 50000 ops" 
                   << std::setw(25) << avl_time 
                   << std::setw(25) << set_time << std::endl;
     }
