@@ -62,7 +62,7 @@ AVLTree<T>::AVLTree() : root(nullptr), distinct_count(0), total_count(0) {}
 
 template <typename T>
 AVLTree<T>::~AVLTree() {
-    clear(root);
+    clear();
 }
 
 // Private Helper Methods
@@ -199,42 +199,47 @@ typename AVLTree<T>::Node* AVLTree<T>::remove(Node* node, const T &key, int amou
     if (node == nullptr)
         return node;
 
+    // Traverse to the node to be deleted.
     if (key < node->key)
         node->left = remove(node->left, key, amount);
     else if (key > node->key)
         node->right = remove(node->right, key, amount);
     else {
-        // Found the node with key.
+        // Found the node with the target key.
         if (amount < node->count) {
-            // Just remove the given amount.
+            // Only remove part of the count.
             node->count -= amount;
             total_count -= amount;
             return node;
         } else {
-            // We are removing the entire node.
-            if ((node->left == nullptr) || (node->right == nullptr)) {
-                // Node has zero or one child.
+            // Remove the entire node.
+            total_count -= node->count;
+            distinct_count--;
+            
+            // Case 1: node has 0 or 1 child.
+            if (node->left == nullptr || node->right == nullptr) {
                 Node* temp = node->left ? node->left : node->right;
-                // Since we are completely deleting this node, update counters.
-                total_count -= node->count;
-                distinct_count--;
                 if (temp == nullptr) {
-                    temp = node;
-                    node = nullptr;
+                    // No children: free the node and return nullptr.
+                    delete node;
+                    return nullptr;
                 } else {
-                    *node = *temp;
+                    // One child: replace node with its child.
+                    Node* oldNode = node;
+                    node = temp;
+                    delete oldNode;
                 }
-                delete temp;
-            } else {
-                // Node with two children:
-                // Instead of subtracting counts here, we replace the node with its successor.
+            }
+            // Case 2: node has two children.
+            else {
+                // Find inorder successor.
                 Node* temp = minValueNode(node->right);
-                // Adjust total_count: first remove the whole count of the current node and then add the count of temp.
+                // Adjust total_count:
                 total_count = total_count - node->count + temp->count;
-                // We do not change distinct_count here since the node remains (with a new key and count).
+                // Copy the successor's data to the current node.
                 node->key = temp->key;
                 node->count = temp->count;
-                // Remove the inorder successor from the right subtree.
+                // Remove the inorder successor.
                 node->right = remove(node->right, temp->key, temp->count);
             }
         }
@@ -243,10 +248,11 @@ typename AVLTree<T>::Node* AVLTree<T>::remove(Node* node, const T &key, int amou
     if (node == nullptr)
         return node;
 
-    // Update the height and balance the node.
+    // Update the height.
     node->height = 1 + std::max(height(node->left), height(node->right));
     int balance = getBalance(node);
 
+    // Rebalance if needed.
     // Left Left Case
     if (balance > 1 && getBalance(node->left) >= 0)
         return rotateRight(node);
@@ -410,6 +416,9 @@ int AVLTree<T>::size() const {
 template <typename T>
 void AVLTree<T>::clear() {
     clear(root);
+    root = nullptr;
+    distinct_count = 0;
+    total_count = 0;
 }
 
 template <typename T>
