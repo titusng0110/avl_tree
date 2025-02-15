@@ -54,7 +54,7 @@ void test_avl_tree()
     std::cout << "Testing insert_multiple..." << std::endl;
     avl.insert_multiple(10, 3);
     for (int i = 0; i < 3; ++i)
-        std_set.insert(6);
+        std_set.insert(10);
     std::cout << "AVL size: " << avl.size() << ", std::multiset size: " << std_set.size() << std::endl;
     avl.print_inorder();
     for (const auto &element : std_set)
