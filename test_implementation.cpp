@@ -245,6 +245,12 @@ void test_avl_tree()
         {
             std::cout << "AVL min: " << avl.min() << ", std::multiset min: " << *std_set.begin() << std::endl;
             std::cout << "AVL max: " << avl.max() << ", std::multiset max: " << *std::prev(std_set.end()) << std::endl;
+            avl.print_inorder();
+            for (const auto &element : std_set)
+            {
+                std::cout << element << " ";
+            }
+            std::cout << std::endl;
             assert(avl.min() == *std_set.begin());
             assert(avl.max() == *std::prev(std_set.end()));
         }
