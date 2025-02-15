@@ -154,17 +154,17 @@ void run_performance_test(size_t data_size)
             Timer t2;
             set.insert(test_data.begin(), test_data.end());
             set_time += t2.elapsed();
+
+            avl.clear();
+            set.clear();
+            avl.init_from_vector(data);
+            set.insert(data.begin(), data.end());
         }
 
         std::cout << std::setw(25) << "bulk_insert 10 ops"
                   << std::setw(20) << avl_time
                   << std::setw(25) << set_time << std::endl;
     }
-
-    avl.clear();
-    set.clear();
-    avl.init_from_vector(data);
-    set.insert(data.begin(), data.end());
 
     // Test remove (50000 operations)
     {
