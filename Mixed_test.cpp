@@ -26,9 +26,9 @@ void test_avl_tree()
     AVLTree<int> avl;
     std::multiset<int> std_set;
 
-    std::cout << "Testing init_from_vector..." << std::endl;
+    std::cout << "Testing initialization..." << std::endl;
     std::vector<int> init_vec = {5, 2, 8, 2, 1, 9, 5, 3, 7};
-    avl.init_from_vector(init_vec);
+    avl.bulk_insert(init_vec.begin(), init_vec.end());
     std_set.insert(init_vec.begin(), init_vec.end());
     std::cout << "AVL size: " << avl.size() << ", std::multiset size: " << std_set.size() << std::endl;
     avl.print_inorder();
