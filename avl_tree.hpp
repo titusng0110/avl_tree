@@ -115,23 +115,43 @@ int AVLTree<T>::getBalance(Node* node) const {
 
 template <typename T>
 typename AVLTree<T>::Node* AVLTree<T>::rotateRight(Node* y) {
+    if (y == nullptr || y->left == nullptr) {
+        // Handle error or return nullptr
+        std::cout<<"something wrong during rotateRight"<<std::endl;
+        return y;
+    }
+
     Node* x = y->left;
     Node* T2 = x->right;
+
     x->right = y;
     y->left = T2;
-    y->height = std::max(height(y->left), height(y->right)) + 1;
-    x->height = std::max(height(x->left), height(x->right)) + 1;
+
+    // Update heights
+    y->height = 1 + std::max(height(y->left), height(y->right));
+    x->height = 1 + std::max(height(x->left), height(x->right));
+
     return x;
 }
 
 template <typename T>
 typename AVLTree<T>::Node* AVLTree<T>::rotateLeft(Node* x) {
+    if (x == nullptr || x->right == nullptr) {
+        // Handle error or return nullptr
+        std::cout<<"something wrong during rotateLeft"<<std::endl;
+        return x;
+    }
+
     Node* y = x->right;
     Node* T2 = y->left;
+
     y->left = x;
     x->right = T2;
-    x->height = std::max(height(x->left), height(x->right)) + 1;
-    y->height = std::max(height(y->left), height(y->right)) + 1;
+
+    // Update heights
+    x->height = 1 + std::max(height(x->left), height(x->right));
+    y->height = 1 + std::max(height(y->left), height(y->right));
+
     return y;
 }
 
