@@ -57,8 +57,8 @@ void run_performance_test(size_t data_size) {
             set_time += t2.elapsed();
         }
         std::cout << std::setw(25) << "init_from_vector 10 ops" 
-                  << std::setw(25) << avl_time/10 
-                  << std::setw(25) << set_time/10 << std::endl;
+                  << std::setw(25) << avl_time 
+                  << std::setw(25) << set_time << std::endl;
     }
 
     // Initialize containers for other tests
