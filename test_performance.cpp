@@ -62,27 +62,18 @@ void run_performance_test(size_t data_size) {
     }
 
     // Initialize containers for other tests
-    std::cout<<"aaa"<<std::endl;
     AVLTree<int> avl;
-    std::cout<<"bbb"<<std::endl;
     std::multiset<int> set;
-    std::cout<<"ccc"<<std::endl;
     avl.init_from_vector(data);
-    std::cout<<"ddd"<<std::endl;
     set.insert(data.begin(), data.end());
-    std::cout<<"eee"<<std::endl;
 
     // Test insert (50000 operations)
     {
-        std::cout<<"fff"<<std::endl;
         auto test_data = generate_random_integers(50000);
-        std::cout<<"ggg"<<std::endl;
+
         Timer t1;
-        std::cout<<"hhh"<<std::endl;
         for (int val : test_data) avl.insert(val);
-        std::cout<<"iii"<<std::endl;
         double avl_time = t1.elapsed();
-        std::cout<<"jjj"<<std::endl;
         
         Timer t2;
         for (int val : test_data) set.insert(val);
