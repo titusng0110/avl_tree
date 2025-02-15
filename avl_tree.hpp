@@ -233,9 +233,9 @@ typename AVLTree<T>::Node *AVLTree<T>::insert(Node *node, const T &key, int amou
     // If the node was previously min or max and was rotated,
     // we need to update the cached pointers
     if (min_node && key < min_node->key)
-        updateMinNode();
+        min_node = node;
     if (max_node && key > max_node->key)
-        updateMaxNode();
+        max_node = node;
 
     return node;
 }
@@ -275,9 +275,6 @@ typename AVLTree<T>::Node *AVLTree<T>::remove(Node *node, const T &key, int amou
 {
     if (node == nullptr)
         return node;
-
-    bool wasMin = (node == min_node);
-    bool wasMax = (node == max_node);
 
     // Traverse to the node to be deleted.
     if (key < node->key)
@@ -364,11 +361,6 @@ typename AVLTree<T>::Node *AVLTree<T>::remove(Node *node, const T &key, int amou
         node = rotateLeft(node);
     }
 
-    if (wasMin)
-        updateMinNode();
-    if (wasMax)
-        updateMaxNode();
-
     return node;
 }
 
@@ -451,6 +443,8 @@ template <typename T>
 void AVLTree<T>::remove(const T &key)
 {
     root = remove(root, key, 1);
+    updateMinNode();
+    updateMaxNode();
 }
 
 template <typename T>
@@ -462,6 +456,8 @@ void AVLTree<T>::remove_multiple(const T &key, int amount)
     if (lb == nullptr || lb->key != key)
         return;
     root = remove(root, key, amount);
+    updateMinNode();
+    updateMaxNode();
 }
 
 template <typename T>
@@ -471,6 +467,8 @@ void AVLTree<T>::remove_all(const T &key)
     if (lb == nullptr || lb->key != key)
         return;
     root = remove(root, key, lb->count);
+    updateMinNode();
+    updateMaxNode();
 }
 
 template <typename T>
