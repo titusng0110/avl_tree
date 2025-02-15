@@ -40,8 +40,8 @@ void test_avl_tree()
     assert(avl.size() == std_set.size());
 
     std::cout << "Testing insert..." << std::endl;
-    avl.insert(4);
-    std_set.insert(4);
+    avl.insert(0);
+    std_set.insert(0);
     std::cout << "AVL size: " << avl.size() << ", std::multiset size: " << std_set.size() << std::endl;
     avl.print_inorder();
     for (const auto &element : std_set)
@@ -52,7 +52,7 @@ void test_avl_tree()
     assert(avl.size() == std_set.size());
 
     std::cout << "Testing insert_multiple..." << std::endl;
-    avl.insert_multiple(6, 3);
+    avl.insert_multiple(10, 3);
     for (int i = 0; i < 3; ++i)
         std_set.insert(6);
     std::cout << "AVL size: " << avl.size() << ", std::multiset size: " << std_set.size() << std::endl;
@@ -168,9 +168,7 @@ void test_avl_tree()
         std::cout << element << " ";
     }
     std::cout << std::endl;
-    std::cout << "AVL min: " << avl.min() << ", std::multiset min: " << *std_set.begin() << std::endl;
-    std::cout << "AVL max: " << avl.max() << ", std::multiset max: " << *std::prev(std_set.end()) << std::endl;
-            
+
     std::cout << "Additional tests with random operations..." << std::endl;
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -247,12 +245,6 @@ void test_avl_tree()
         {
             std::cout << "AVL min: " << avl.min() << ", std::multiset min: " << *std_set.begin() << std::endl;
             std::cout << "AVL max: " << avl.max() << ", std::multiset max: " << *std::prev(std_set.end()) << std::endl;
-            avl.print_inorder();
-            for (const auto &element : std_set)
-            {
-                std::cout << element << " ";
-            }
-            std::cout << std::endl;
             assert(avl.min() == *std_set.begin());
             assert(avl.max() == *std::prev(std_set.end()));
         }
