@@ -76,8 +76,10 @@ typename AVLTree<T>::Node* AVLTree<T>::buildFromSorted(const std::vector<T>& key
     if (start > end)
         return nullptr;
 
-    int mid = (start + end) / 2;
+    // Safer mid calculation
+    int mid = start + (end - start) / 2;
     
+    // Count duplicates
     int count = 1;
     int i = mid - 1;
     while (i >= start && keys[i] == keys[mid]) {
@@ -100,12 +102,24 @@ typename AVLTree<T>::Node* AVLTree<T>::buildFromSorted(const std::vector<T>& key
     int rightStart = mid + 1;
     while (rightStart <= end && keys[rightStart] == keys[mid]) rightStart++;
 
-    node->left = buildFromSorted(keys, start, leftEnd);
-    node->right = buildFromSorted(keys, rightStart, end);
+    try {
+        node->left = buildFromSorted(keys, start, leftEnd);
+        node->right = buildFromSorted(keys, rightStart, end);
 
-    node->height = 1 + std::max(height(node->left), height(node->right));
-    
-    return node;
+        node->height = 1 + std::max(height(node->left), height(node->right));
+        
+        // Check balance factor and rotate if necessary
+        int balance = getBalance(node);
+        if (balance > 1 || balance < -1) {
+            node = rebalance(node);
+        }
+        
+        return node;
+    }
+    catch (...) {
+        delete node;
+        throw;
+    }
 }
 
 template <typename T>
@@ -184,27 +198,23 @@ typename AVLTree<T>::Node* AVLTree<T>::insert(Node* node, const T &key, int amou
     int balance = getBalance(node);
 
     // Left Left Case
-    if (balance > 1  && key < node->left->key)
+    if (balance > 1 && key < node->left->key)
         return rotateRight(node);
 
     // Right Right Case
-    if (balance < -1  && key > node->right->key)
+    if (balance < -1 && key > node->right->key)
         return rotateLeft(node);
 
     // Left Right Case
-    if (balance > 1 && node->left  && key > node->left->key) {
-        if(node->left->right == nullptr) {
-            std::cout<<"node->left->right is nullptr during insert"<<std::endl;
-        }
+    if (balance > 1 && key > node->left->key) {
+
         node->left = rotateLeft(node->left);
         return rotateRight(node);
     }
 
     // Right Left Case
-    if (balance < -1 && node->right  && key < node->right->key) {
-        if(node->right->left == nullptr) {
-            std::cout<<"node->right->left is nullptr during insert"<<std::endl;
-        }
+    if (balance < -1 && key < node->right->key) {
+
         node->right = rotateRight(node->right);
         return rotateLeft(node);
     }
