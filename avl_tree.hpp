@@ -415,9 +415,7 @@ template <typename Iterator>
 void AVLTree<T>::bulk_insert(Iterator begin, Iterator end)
 {
     // If bulk is small compared to tree size, do individual insertions
-    std::cout<<"YYY"<<std::endl;
     size_t bulk_size = std::distance(begin, end);
-    std::cout<<"ZZZ"<<std::endl;
     if (bulk_size < size())
     {
         for (Iterator it = begin; it != end; ++it)

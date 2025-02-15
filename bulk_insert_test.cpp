@@ -202,18 +202,13 @@ void test_tree_larger_than_bulk()
 
     // Test Case 1: Large tree, small bulk insert
     {
-        std::cout<<"aaa"<<std::endl; 
         AVLTree<int> tree;
         // First create a large tree
-        std::cout<<"bbb"<<std::endl; 
         for (int i = 0; i < 1000; i++)
         {
-            std::cout<<i<<std::endl;
             tree.insert(i * 2); // Even numbers
         }
-        std::cout<<"ccc"<<std::endl; 
         size_t original_size = tree.size();
-        std::cout<<"ddd"<<std::endl; 
         // Small bulk insert
         std::vector<int> small_bulk = {1, 3, 5, 7, 9}; // Odd numbers
         tree.bulk_insert(small_bulk.begin(), small_bulk.end());
