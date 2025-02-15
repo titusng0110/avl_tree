@@ -48,6 +48,8 @@ public:
     void init_from_vector(const std::vector<T> &keys);
     void insert(const T &key);
     void insert_multiple(const T &key, int amount);
+    template <typename Iterator>
+    void bulk_insert(Iterator begin, Iterator end);
     void remove_multiple(const T &key, int amount);
     void remove_all(const T &key);
     void remove(const T &key);
@@ -437,6 +439,40 @@ void AVLTree<T>::insert_multiple(const T &key, int amount)
         throw std::invalid_argument("Amount must be non-negative");
     }
     root = insert(root, key, amount);
+}
+
+template <typename T>
+template <typename Iterator>
+void AVLTree<T>::bulk_insert(Iterator begin, Iterator end) {
+    // If bulk is small compared to tree size, do individual insertions
+    size_t bulk_size = std::distance(begin, end);
+    if (bulk_size < size()) {
+        for (Iterator it = begin; it != end; ++it) {
+            insert(*it);
+        }
+        return;
+    }
+
+    // Get current elements in sorted order
+    std::vector<T> current;
+    inorder(root, current);
+    
+    // Sort the bulk elements
+    std::vector<T> bulk_elements(begin, end);
+    std::sort(bulk_elements.begin(), bulk_elements.end());
+    
+    // Merge current and bulk elements
+    std::vector<T> merged;
+    merged.reserve(current.size() + bulk_size);
+    std::merge(current.begin(), current.end(),
+               bulk_elements.begin(), bulk_elements.end(),
+               std::back_inserter(merged));
+    
+    // Rebuild tree
+    clear();
+    root = buildFromSorted(merged, 0, merged.size() - 1);
+    updateMinNode();
+    updateMaxNode();
 }
 
 template <typename T>
