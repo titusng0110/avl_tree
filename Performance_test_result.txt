@@ -1,0 +1,48 @@
+
+Testing with data size: 100000
+                Operation        AVLTree (ms)       std::multiset (ms)
+----------------------------------------------------------------------
+        initialize 10 ops             62.3705                   99.655
+         insert 50000 ops             7.42787                  6.24974
+insert_multiple 50000 ops             7.26831                  155.425
+       bulk_insert 10 ops             71.7159                  127.511
+         remove 50000 ops              6.7523                  6.57794
+remove_multiple 50000 ops             6.39004                  6.82212
+            min 50000 ops             2.1e-05                  1.2e-05
+            max 50000 ops             2.3e-05                  2.1e-05
+        pop_min 50000 ops             2.00986                 0.742241
+        pop_max 50000 ops             1.86509                 0.776881
+    lower_bound 50000 ops             2.2e-05                  1.6e-05
+          count 50000 ops             2.2e-05                  1.9e-05
+
+Testing with data size: 1000000
+                Operation        AVLTree (ms)       std::multiset (ms)
+----------------------------------------------------------------------
+        initialize 10 ops             488.147                  2907.94
+         insert 50000 ops             7.43386                  18.9543
+insert_multiple 50000 ops             7.35862                   176.54
+       bulk_insert 10 ops              560.74                  5097.56
+         remove 50000 ops             7.34478                  23.0244
+remove_multiple 50000 ops             11.3832                  29.0891
+            min 50000 ops             2.1e-05                  1.6e-05
+            max 50000 ops             1.5e-05                  1.5e-05
+        pop_min 50000 ops             1.77685                  1.79179
+        pop_max 50000 ops             1.75237                  2.12692
+    lower_bound 50000 ops             2.1e-05                  2.1e-05
+          count 50000 ops             1.6e-05                  1.7e-05
+
+Testing with data size: 10000000
+                Operation        AVLTree (ms)       std::multiset (ms)
+----------------------------------------------------------------------
+        initialize 10 ops             4482.68                  97621.9
+         insert 50000 ops             10.0546                  58.9595
+insert_multiple 50000 ops             9.33241                  210.538
+       bulk_insert 10 ops             4636.14                   131424
+         remove 50000 ops             8.95944                  71.3842
+remove_multiple 50000 ops             12.8968                  164.518
+            min 50000 ops             2.1e-05                  2.6e-05
+            max 50000 ops             2.2e-05                  2.1e-05
+        pop_min 50000 ops             1.51195                  2.28515
+        pop_max 50000 ops             1.46954                  2.43915
+    lower_bound 50000 ops             2.2e-05                  2.1e-05
+          count 50000 ops             2.1e-05                  2.3e-05
