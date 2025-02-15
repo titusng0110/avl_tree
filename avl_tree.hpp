@@ -24,7 +24,7 @@ private:
     Node *root;
     Node *min_node;
     Node *max_node;
-    size_t istinct_count;
+    size_t distinct_count;
     size_t total_count;
 
     short height(Node *node) const;
@@ -32,12 +32,12 @@ private:
     int getBalance(Node *node) const;
     Node *rotateRight(Node *y);
     Node *rotateLeft(Node *x);
-    Node *insert(Node *node, const T &key, int amount);
+    Node *insert(Node *node, const T &key, unsigned int amount);
     Node *getMinNode(Node *node) const;
     Node *getMaxNode(Node *node) const;
     void updateMinNode();
     void updateMaxNode();
-    Node *remove(Node *node, const T &key, int amount);
+    Node *remove(Node *node, const T &key, unsigned int amount);
     void clear(Node *node);
     Node *lower_bound(Node *node, const T &key) const;
     void inorder(Node *node, std::vector<T> &result) const;
@@ -48,8 +48,8 @@ public:
     template <typename Iterator>
     void bulk_insert(Iterator begin, Iterator end);
     void insert(const T &key);
-    void insert_multiple(const T &key, int amount);
-    void remove_multiple(const T &key, int amount);
+    void insert_multiple(const T &key, unsigned int amount);
+    void remove_multiple(const T &key, unsigned int amount);
     void remove_all(const T &key);
     void remove(const T &key);
     Node *lower_bound(const T &key) const;
@@ -186,7 +186,7 @@ typename AVLTree<T>::Node *AVLTree<T>::rotateLeft(Node *x)
 }
 
 template <typename T>
-typename AVLTree<T>::Node *AVLTree<T>::insert(Node *node, const T &key, int amount)
+typename AVLTree<T>::Node *AVLTree<T>::insert(Node *node, const T &key, unsigned int amount)
 {
     if (node == nullptr)
     {
@@ -242,7 +242,7 @@ typename AVLTree<T>::Node *AVLTree<T>::insert(Node *node, const T &key, int amou
 }
 
 template <typename T>
-typename AVLTree<T>::Node *AVLTree<T>::remove(Node *node, const T &key, int amount)
+typename AVLTree<T>::Node *AVLTree<T>::remove(Node *node, const T &key, unsigned int amount)
 {
     if (node == nullptr)
         return node;
@@ -292,7 +292,7 @@ typename AVLTree<T>::Node *AVLTree<T>::remove(Node *node, const T &key, int amou
                 // Find inorder successor.
                 Node *temp = getMinNode(node->right);
                 // Adjust total_count:
-                total_count = total_count - node->count + temp->count;
+                total_count = total_count + temp->count - node->count;
                 // Copy the successor's data to the current node.
                 node->key = temp->key;
                 node->count = temp->count;
@@ -453,12 +453,8 @@ void AVLTree<T>::insert(const T &key)
 }
 
 template <typename T>
-void AVLTree<T>::insert_multiple(const T &key, int amount)
+void AVLTree<T>::insert_multiple(const T &key, unsigned int amount)
 {
-    if (amount < 0)
-    {
-        throw std::invalid_argument("Amount must be non-negative");
-    }
     root = insert(root, key, amount);
 }
 
@@ -471,7 +467,7 @@ void AVLTree<T>::remove(const T &key)
 }
 
 template <typename T>
-void AVLTree<T>::remove_multiple(const T &key, int amount)
+void AVLTree<T>::remove_multiple(const T &key, unsigned int amount)
 {
     if (amount <= 0)
         return;
