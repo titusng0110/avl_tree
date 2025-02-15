@@ -85,8 +85,10 @@ void run_performance_test(size_t data_size) {
 
     avl.clear();
     set.clear();
+    std::cout << "Cleared AVL and std::multiset" << std::endl;
     avl.init_from_vector(data);
     set.insert(data.begin(), data.end());
+    std::cout<<"Inserted data into AVL and std::multiset"<<std::endl;
 
     // Test insert_multiple (50000 operations)
     {
