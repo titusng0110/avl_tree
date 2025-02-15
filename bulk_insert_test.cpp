@@ -1,4 +1,4 @@
-#include "AVL_tree.hpp"
+#include "avl_tree.hpp"
 #include <cassert>
 #include <vector>
 #include <list>
