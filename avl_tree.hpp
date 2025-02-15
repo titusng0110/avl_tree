@@ -127,18 +127,15 @@ typename AVLTree<T>::Node *AVLTree<T>::buildFromSorted(const std::vector<T> &key
     // Left Left Case
     if (balance > 1 && getBalance(node->left) >= 0)
         node = rotateRight(node);
-
     // Right Right Case
     else if (balance < -1 && getBalance(node->right) <= 0)
         node = rotateLeft(node);
-
     // Left Right Case
     else if (balance > 1 && getBalance(node->left) < 0)
     {
         node->left = rotateLeft(node->left);
         node = rotateRight(node);
     }
-
     // Right Left Case
     else if (balance < -1 && getBalance(node->right) > 0)
     {
@@ -194,11 +191,18 @@ typename AVLTree<T>::Node *AVLTree<T>::insert(Node *node, const T &key, unsigned
         distinct_count++;
         total_count += amount;
 
-        if (!min_node || key < min_node->key)
-            min_node = newNode;
-        if (!max_node || key > max_node->key)
-            max_node = newNode;
-
+        // Update min_node and max_node when creating a new node
+        if (root == nullptr)
+        {
+            min_node = max_node = newNode;
+        }
+        else
+        {
+            if (key < min_node->key)
+                min_node = newNode;
+            if (key > max_node->key)
+                max_node = newNode;
+        }
         return newNode;
     }
 
@@ -313,18 +317,15 @@ typename AVLTree<T>::Node *AVLTree<T>::remove(Node *node, const T &key, unsigned
     // Left Left Case
     if (balance > 1 && getBalance(node->left) >= 0)
         node = rotateRight(node);
-
     // Right Right Case
     else if (balance < -1 && getBalance(node->right) <= 0)
         node = rotateLeft(node);
-
     // Left Right Case
     else if (balance > 1 && getBalance(node->left) < 0)
     {
         node->left = rotateLeft(node->left);
         node = rotateRight(node);
     }
-
     // Right Left Case
     else if (balance < -1 && getBalance(node->right) > 0)
     {
