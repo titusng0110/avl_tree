@@ -168,7 +168,9 @@ void test_avl_tree()
         std::cout << element << " ";
     }
     std::cout << std::endl;
-
+    std::cout << "AVL min: " << avl.min() << ", std::multiset min: " << *std_set.begin() << std::endl;
+    std::cout << "AVL max: " << avl.max() << ", std::multiset max: " << *std::prev(std_set.end()) << std::endl;
+            
     std::cout << "Additional tests with random operations..." << std::endl;
     std::random_device rd;
     std::mt19937 gen(rd());
