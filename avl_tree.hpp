@@ -115,10 +115,14 @@ int AVLTree<T>::getBalance(Node* node) const {
 
 template <typename T>
 typename AVLTree<T>::Node* AVLTree<T>::rotateRight(Node* y) {
-    if (y == nullptr || y->left == nullptr) {
+    if (y == nullptr) {
         // Handle error or return nullptr
-        std::cout<<"something wrong during rotateRight"<<std::endl;
+        std::cout<<"node is nullptr during rotateRight"<<std::endl;
         return y;
+    }
+    else if (y->left == nullptr) {
+        std::cout<<"node->left is nullptr during rotateRight"<<std::endl;
+        return y
     }
 
     Node* x = y->left;
@@ -136,9 +140,13 @@ typename AVLTree<T>::Node* AVLTree<T>::rotateRight(Node* y) {
 
 template <typename T>
 typename AVLTree<T>::Node* AVLTree<T>::rotateLeft(Node* x) {
-    if (x == nullptr || x->right == nullptr) {
+    if (x == nullptr) {
         // Handle error or return nullptr
-        std::cout<<"something wrong during rotateLeft"<<std::endl;
+        std::cout<<"node is nullptr during rotateLeft"<<std::endl;
+        return x;
+    }
+    else if (x->right == nullptr) {
+        std::cout<<"node->right is nullptr during rotateLeft"<<std::endl;
         return x;
     }
 
