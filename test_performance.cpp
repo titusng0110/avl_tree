@@ -34,9 +34,9 @@ public:
 // Function to run performance tests
 void run_performance_test(size_t data_size) {
     std::cout << "\nTesting with data size: " << data_size << std::endl;
-    std::cout << std::setw(20) << "Operation" << std::setw(15) << "AVLTree (ms)" 
-              << std::setw(15) << "std::multiset (ms)" << std::endl;
-    std::cout << std::string(50, '-') << std::endl;
+    std::cout << std::setw(25) << "Operation" << std::setw(25) << "AVLTree (ms)" 
+              << std::setw(25) << "std::multiset (ms)" << std::endl;
+    std::cout << std::string(75, '-') << std::endl;
 
     // Generate test data
     std::vector<int> data = generate_random_integers(data_size);
@@ -56,9 +56,9 @@ void run_performance_test(size_t data_size) {
             set.insert(data.begin(), data.end());
             set_time += t2.elapsed();
         }
-        std::cout << std::setw(20) << "init_from_vector" 
-                  << std::setw(15) << avl_time/10 
-                  << std::setw(15) << set_time/10 << std::endl;
+        std::cout << std::setw(25) << "init_from_vector 10 ops" 
+                  << std::setw(25) << avl_time/10 
+                  << std::setw(25) << set_time/10 << std::endl;
     }
 
     // Initialize containers for other tests
@@ -67,9 +67,9 @@ void run_performance_test(size_t data_size) {
     avl.init_from_vector(data);
     set.insert(data.begin(), data.end());
 
-    // Test insert (10000 operations)
+    // Test insert (50000 operations)
     {
-        auto test_data = generate_random_integers(10000);
+        auto test_data = generate_random_integers(50000);
         Timer t1;
         for (int val : test_data) avl.insert(val);
         double avl_time = t1.elapsed();
@@ -78,14 +78,14 @@ void run_performance_test(size_t data_size) {
         for (int val : test_data) set.insert(val);
         double set_time = t2.elapsed();
         
-        std::cout << std::setw(20) << "insert" 
-                  << std::setw(15) << avl_time 
-                  << std::setw(15) << set_time << std::endl;
+        std::cout << std::setw(25) << "insert 50000 ops" 
+                  << std::setw(25) << avl_time 
+                  << std::setw(25) << set_time << std::endl;
     }
 
-    // Test insert_multiple (10000 operations)
+    // Test insert_multiple (50000 operations)
     {
-        auto test_data = generate_random_integers(10000);
+        auto test_data = generate_random_integers(50000);
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_int_distribution<int> dup_dist(2, 20);  // Random duplicates between 2-20
@@ -111,14 +111,14 @@ void run_performance_test(size_t data_size) {
         }
         double set_time = t2.elapsed();
         
-        std::cout << std::setw(20) << "insert_multiple" 
-                << std::setw(15) << avl_time 
-                << std::setw(15) << set_time << std::endl;
+        std::cout << std::setw(25) << "insert_multiple 50000 ops" 
+                << std::setw(25) << avl_time 
+                << std::setw(25) << set_time << std::endl;
     }
 
-    // Test remove (10000 operations)
+    // Test remove (50000 operations)
     {
-        auto test_data = generate_random_integers(10000);
+        auto test_data = generate_random_integers(50000);
         Timer t1;
         for (int val : test_data) avl.remove(val);
         double avl_time = t1.elapsed();
@@ -130,17 +130,17 @@ void run_performance_test(size_t data_size) {
         }
         double set_time = t2.elapsed();
         
-        std::cout << std::setw(20) << "remove" 
-                  << std::setw(15) << avl_time 
-                  << std::setw(15) << set_time << std::endl;
+        std::cout << std::setw(25) << "remove 50000 ops" 
+                  << std::setw(25) << avl_time 
+                  << std::setw(25) << set_time << std::endl;
     }
 
-    // Test remove_multiple (10000 operations)
+    // Test remove_multiple (50000 operations)
     {
-        auto test_data = generate_random_integers(10000);
+        auto test_data = generate_random_integers(50000);
         std::random_device rd;
         std::mt19937 gen(rd());
-        std::uniform_int_distribution<int> dup_dist(2, 20);  // Random duplicates between 2-20
+        std::uniform_int_distribution<int> dup_dist(2, 100);  // Random duplicates between 2-100
         
         // Generate duplicate counts first
         std::vector<int> duplicate_counts;
@@ -164,55 +164,55 @@ void run_performance_test(size_t data_size) {
         }
         double set_time = t2.elapsed();
         
-        std::cout << std::setw(20) << "remove_multiple" 
-                << std::setw(15) << avl_time 
-                << std::setw(15) << set_time << std::endl;
+        std::cout << std::setw(25) << "remove_multiple 50000 ops" 
+                << std::setw(25) << avl_time 
+                << std::setw(25) << set_time << std::endl;
     }
 
-    // Test min/max operations (10000 operations)
+    // Test min/max operations (50000 operations)
     {
         Timer t1;
-        for (int i = 0; i < 10000; ++i) avl.min();
+        for (int i = 0; i < 50000; ++i) avl.min();
         double avl_min_time = t1.elapsed();
         
         Timer t2;
-        for (int i = 0; i < 10000; ++i) *(set.begin());
+        for (int i = 0; i < 50000; ++i) *(set.begin());
         double set_min_time = t2.elapsed();
         
-        std::cout << std::setw(20) << "min" 
-                  << std::setw(15) << avl_min_time 
-                  << std::setw(15) << set_min_time << std::endl;
+        std::cout << std::setw(25) << "min 50000 ops" 
+                  << std::setw(25) << avl_min_time 
+                  << std::setw(25) << set_min_time << std::endl;
 
         Timer t3;
-        for (int i = 0; i < 10000; ++i) avl.max();
+        for (int i = 0; i < 50000; ++i) avl.max();
         double avl_max_time = t3.elapsed();
         
         Timer t4;
-        for (int i = 0; i < 10000; ++i) *(--set.end());
+        for (int i = 0; i < 50000; ++i) *(--set.end());
         double set_max_time = t4.elapsed();
         
-        std::cout << std::setw(20) << "max" 
-                  << std::setw(15) << avl_max_time 
-                  << std::setw(15) << set_max_time << std::endl;
+        std::cout << std::setw(25) << "max 50000 ops" 
+                  << std::setw(25) << avl_max_time 
+                  << std::setw(25) << set_max_time << std::endl;
     }
 
-    // Test pop operations (10000 operations)
+    // Test pop operations (50000 operations)
     {
         Timer t1;
-        for (int i = 0; i < 10000 && avl.size() > 0; ++i) avl.pop_min();
+        for (int i = 0; i < 50000 && avl.size() > 0; ++i) avl.pop_min();
         double avl_time = t1.elapsed();
         
         Timer t2;
-        for (int i = 0; i < 10000 && !set.empty(); ++i) set.erase(set.begin());
+        for (int i = 0; i < 50000 && !set.empty(); ++i) set.erase(set.begin());
         double set_time = t2.elapsed();
         
-        std::cout << std::setw(20) << "pop_min/max" 
-                  << std::setw(15) << avl_time 
-                  << std::setw(15) << set_time << std::endl;
+        std::cout << std::setw(25) << "pop_min/max 50000 ops" 
+                  << std::setw(25) << avl_time 
+                  << std::setw(25) << set_time << std::endl;
     }
 
     {
-        auto test_data = generate_random_integers(10000);
+        auto test_data = generate_random_integers(50000);
         Timer t1;
         for (int val : test_data) {
             auto it = avl.lower_bound(val);  // Testing lower_bound
@@ -225,9 +225,9 @@ void run_performance_test(size_t data_size) {
         }
         double set_time = t2.elapsed();
         
-        std::cout << std::setw(20) << "lower_bound" 
-                  << std::setw(15) << avl_time 
-                  << std::setw(15) << set_time << std::endl;
+        std::cout << std::setw(25) << "lower_bound 50000 ops" 
+                  << std::setw(25) << avl_time 
+                  << std::setw(25) << set_time << std::endl;
     }
 }
 
