@@ -14,7 +14,7 @@ private:
     {
         T key;
         short height;
-        int count;
+        unsigned int count;
         Node *left;
         Node *right;
         Node(const T &k, int cnt = 1)
@@ -24,8 +24,8 @@ private:
     Node *root;
     Node *min_node;
     Node *max_node;
-    int distinct_count;
-    int total_count;
+    size_t istinct_count;
+    size_t total_count;
 
     short height(Node *node) const;
     Node *buildFromSorted(const std::vector<T> &keys, int start, int end);
@@ -45,21 +45,21 @@ private:
 public:
     AVLTree();
     ~AVLTree();
-    void insert(const T &key);
-    void insert_multiple(const T &key, int amount);
     template <typename Iterator>
     void bulk_insert(Iterator begin, Iterator end);
+    void insert(const T &key);
+    void insert_multiple(const T &key, int amount);
     void remove_multiple(const T &key, int amount);
     void remove_all(const T &key);
     void remove(const T &key);
     Node *lower_bound(const T &key) const;
-    int count(const T &key) const;
+    unsigned int count(const T &key) const;
     bool contains(const T &key) const;
     T min() const;
     T max() const;
     T pop_min();
     T pop_max();
-    int size() const;
+    size_t size() const;
     void clear();
     void print_inorder() const;
 };
@@ -242,36 +242,6 @@ typename AVLTree<T>::Node *AVLTree<T>::insert(Node *node, const T &key, int amou
 }
 
 template <typename T>
-typename AVLTree<T>::Node *AVLTree<T>::getMinNode(Node *node) const
-{
-    Node *current = node;
-    while (current->left != nullptr)
-        current = current->left;
-    return current;
-}
-
-template <typename T>
-typename AVLTree<T>::Node *AVLTree<T>::getMaxNode(Node *node) const
-{
-    Node *current = node;
-    while (current->right != nullptr)
-        current = current->right;
-    return current;
-}
-
-template <typename T>
-void AVLTree<T>::updateMinNode()
-{
-    min_node = (root == nullptr) ? nullptr : getMinNode(root);
-}
-
-template <typename T>
-void AVLTree<T>::updateMaxNode()
-{
-    max_node = (root == nullptr) ? nullptr : getMaxNode(root);
-}
-
-template <typename T>
 typename AVLTree<T>::Node *AVLTree<T>::remove(Node *node, const T &key, int amount)
 {
     if (node == nullptr)
@@ -366,13 +336,33 @@ typename AVLTree<T>::Node *AVLTree<T>::remove(Node *node, const T &key, int amou
 }
 
 template <typename T>
-void AVLTree<T>::clear(Node *node)
+typename AVLTree<T>::Node *AVLTree<T>::getMinNode(Node *node) const
 {
-    if (node == nullptr)
-        return;
-    clear(node->left);
-    clear(node->right);
-    delete node;
+    Node *current = node;
+    while (current->left != nullptr)
+        current = current->left;
+    return current;
+}
+
+template <typename T>
+typename AVLTree<T>::Node *AVLTree<T>::getMaxNode(Node *node) const
+{
+    Node *current = node;
+    while (current->right != nullptr)
+        current = current->right;
+    return current;
+}
+
+template <typename T>
+void AVLTree<T>::updateMinNode()
+{
+    min_node = (root == nullptr) ? nullptr : getMinNode(root);
+}
+
+template <typename T>
+void AVLTree<T>::updateMaxNode()
+{
+    max_node = (root == nullptr) ? nullptr : getMaxNode(root);
 }
 
 template <typename T>
@@ -395,6 +385,16 @@ typename AVLTree<T>::Node *AVLTree<T>::lower_bound(Node *node, const T &key) con
 }
 
 template <typename T>
+void AVLTree<T>::clear(Node *node)
+{
+    if (node == nullptr)
+        return;
+    clear(node->left);
+    clear(node->right);
+    delete node;
+}
+
+template <typename T>
 void AVLTree<T>::inorder(Node *node, std::vector<T> &result) const
 {
     if (node)
@@ -409,22 +409,6 @@ void AVLTree<T>::inorder(Node *node, std::vector<T> &result) const
 }
 
 // Public Methods
-template <typename T>
-void AVLTree<T>::insert(const T &key)
-{
-    root = insert(root, key, 1);
-}
-
-template <typename T>
-void AVLTree<T>::insert_multiple(const T &key, int amount)
-{
-    if (amount < 0)
-    {
-        throw std::invalid_argument("Amount must be non-negative");
-    }
-    root = insert(root, key, amount);
-}
-
 template <typename T>
 template <typename Iterator>
 void AVLTree<T>::bulk_insert(Iterator begin, Iterator end)
@@ -460,6 +444,22 @@ void AVLTree<T>::bulk_insert(Iterator begin, Iterator end)
     root = buildFromSorted(merged, 0, merged.size() - 1);
     updateMinNode();
     updateMaxNode();
+}
+
+template <typename T>
+void AVLTree<T>::insert(const T &key)
+{
+    root = insert(root, key, 1);
+}
+
+template <typename T>
+void AVLTree<T>::insert_multiple(const T &key, int amount)
+{
+    if (amount < 0)
+    {
+        throw std::invalid_argument("Amount must be non-negative");
+    }
+    root = insert(root, key, amount);
 }
 
 template <typename T>
@@ -501,7 +501,7 @@ typename AVLTree<T>::Node *AVLTree<T>::lower_bound(const T &key) const
 }
 
 template <typename T>
-int AVLTree<T>::count(const T &key) const
+unsigned int AVLTree<T>::count(const T &key) const
 {
     Node *node = lower_bound(root, key);
     if (node && node->key == key)
@@ -555,7 +555,7 @@ T AVLTree<T>::pop_max()
 }
 
 template <typename T>
-int AVLTree<T>::size() const
+size_t AVLTree<T>::size() const
 {
     return total_count;
 }

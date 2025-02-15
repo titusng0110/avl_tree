@@ -322,7 +322,7 @@ void run_performance_test(size_t data_size)
         Timer t1;
         for (int val : test_data)
         {
-            auto it = avl.lower_bound(val);
+            avl.lower_bound(val);
         }
         double avl_time = t1.elapsed();
         avl.clear();
@@ -331,7 +331,7 @@ void run_performance_test(size_t data_size)
         Timer t2;
         for (int val : test_data)
         {
-            auto it = ms.lower_bound(val);
+            ms.lower_bound(val);
         }
         double ms_time = t2.elapsed();
         ms.clear();
