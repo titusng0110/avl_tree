@@ -151,30 +151,30 @@ typename AVLTree<T>::Node* AVLTree<T>::insert(Node* node, const T &key, int amou
         total_count += amount;
         return node;
     }
-    std::cout << "AAA AAA" << std::endl;
+
     node->height = 1 + std::max(height(node->left), height(node->right));
     int balance = getBalance(node);
-    std::cout << "BBB BBB" << std::endl;
+
     // Left Left Case
-    if (balance > 1 && key < node->left->key)
+    if (balance > 1 && node->left && key < node->left->key)
         return rotateRight(node);
 
     // Right Right Case
-    if (balance < -1 && key > node->right->key)
+    if (balance < -1 && node->right && key > node->right->key)
         return rotateLeft(node);
 
     // Left Right Case
-    if (balance > 1 && key > node->left->key) {
+    if (balance > 1 && node->left && key > node->left->key) {
         node->left = rotateLeft(node->left);
         return rotateRight(node);
     }
 
     // Right Left Case
-    if (balance < -1 && key < node->right->key) {
+    if (balance < -1 && node->right && key < node->right->key) {
         node->right = rotateRight(node->right);
         return rotateLeft(node);
     }
-    std::cout << "CCC CCC" << std::endl;
+
     return node;
 }
 
@@ -257,15 +257,15 @@ typename AVLTree<T>::Node* AVLTree<T>::remove(Node* node, const T &key, int amou
     if (balance > 1 && getBalance(node->left) >= 0)
         return rotateRight(node);
 
+    // Right Right Case
+    if (balance < -1 && getBalance(node->right) <= 0)
+    return rotateLeft(node);
+
     // Left Right Case
     if (balance > 1 && getBalance(node->left) < 0) {
         node->left = rotateLeft(node->left);
         return rotateRight(node);
     }
-
-    // Right Right Case
-    if (balance < -1 && getBalance(node->right) <= 0)
-        return rotateLeft(node);
 
     // Right Left Case
     if (balance < -1 && getBalance(node->right) > 0) {
