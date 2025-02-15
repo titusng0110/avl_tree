@@ -6,23 +6,26 @@
 #include <string>
 
 // Helper function to verify if a vector is sorted
-template<typename T>
-bool is_sorted(const std::vector<T>& vec) {
+template <typename T>
+bool is_sorted(const std::vector<T> &vec)
+{
     return std::is_sorted(vec.begin(), vec.end());
 }
 
 // Helper function to convert tree to vector for verification
-template<typename T>
-std::vector<T> tree_to_vector(const AVLTree<T>& tree) {
+template <typename T>
+std::vector<T> tree_to_vector(const AVLTree<T> &tree)
+{
     std::vector<T> result;
     tree.print_inorder(); // This will help in debugging
     // We'll use the fact that print_inorder already gives us elements in order
     return result;
 }
 
-void test_edge_cases() {
+void test_edge_cases()
+{
     std::cout << "\nTesting edge cases..." << std::endl;
-    
+
     // Test Case 1: Empty bulk insert into empty tree
     {
         AVLTree<int> tree;
@@ -74,7 +77,8 @@ void test_edge_cases() {
     }
 }
 
-void test_normal_cases() {
+void test_normal_cases()
+{
     std::cout << "\nTesting normal cases..." << std::endl;
 
     // Test Case 1: Simple ascending sequence
@@ -138,7 +142,8 @@ void test_normal_cases() {
     {
         AVLTree<int> tree;
         std::vector<int> data(1000);
-        for(int i = 0; i < 1000; i++) data[i] = i;
+        for (int i = 0; i < 1000; i++)
+            data[i] = i;
         tree.bulk_insert(data.begin(), data.end());
         assert(tree.size() == 1000);
         assert(tree.min() == 0);
@@ -191,22 +196,24 @@ void test_normal_cases() {
     }
 }
 
-void test_tree_larger_than_bulk() {
+void test_tree_larger_than_bulk()
+{
     std::cout << "\nTesting cases where tree size > bulk size..." << std::endl;
 
     // Test Case 1: Large tree, small bulk insert
     {
         AVLTree<int> tree;
         // First create a large tree
-        for(int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 1000; i++)
+        {
             tree.insert(i * 2); // Even numbers
         }
         int original_size = tree.size();
-        
+
         // Small bulk insert
         std::vector<int> small_bulk = {1, 3, 5, 7, 9}; // Odd numbers
         tree.bulk_insert(small_bulk.begin(), small_bulk.end());
-        
+
         assert(tree.size() == original_size + small_bulk.size());
         assert(tree.contains(1));
         assert(tree.contains(9));
@@ -217,15 +224,16 @@ void test_tree_larger_than_bulk() {
     {
         AVLTree<int> tree;
         // Create large tree
-        for(int i = 0; i < 500; i++) {
+        for (int i = 0; i < 500; i++)
+        {
             tree.insert(i);
         }
         int original_size = tree.size();
-        
+
         // Bulk insert with some duplicates
         std::vector<int> bulk = {0, 1, 2, 499, 500}; // Some existing, one new
         tree.bulk_insert(bulk.begin(), bulk.end());
-        
+
         assert(tree.size() == original_size + bulk.size());
         assert(tree.contains(500));
         assert(tree.count(0) == 2);
@@ -236,15 +244,16 @@ void test_tree_larger_than_bulk() {
     {
         AVLTree<int> tree;
         // Create large tree with numbers 1000-2000
-        for(int i = 1000; i <= 2000; i++) {
+        for (int i = 1000; i <= 2000; i++)
+        {
             tree.insert(i);
         }
         int original_size = tree.size();
-        
+
         // Bulk insert numbers below, within, and above the range
         std::vector<int> bulk = {500, 1500, 2500};
         tree.bulk_insert(bulk.begin(), bulk.end());
-        
+
         assert(tree.size() == original_size + bulk.size());
         assert(tree.contains(500));
         assert(tree.contains(2500));
@@ -255,15 +264,16 @@ void test_tree_larger_than_bulk() {
     {
         AVLTree<int> tree;
         // Create large tree
-        for(int i = 100; i < 1000; i++) {
+        for (int i = 100; i < 1000; i++)
+        {
             tree.insert(i);
         }
         int original_size = tree.size();
-        
+
         // Bulk insert at boundaries
         std::vector<int> bulk = {99, 1000}; // Just outside current min/max
         tree.bulk_insert(bulk.begin(), bulk.end());
-        
+
         assert(tree.size() == original_size + 2);
         assert(tree.min() == 99);
         assert(tree.max() == 1000);
@@ -274,30 +284,33 @@ void test_tree_larger_than_bulk() {
     {
         AVLTree<int> tree;
         // Create large tree with even numbers
-        for(int i = 0; i < 1000; i += 2) {
+        for (int i = 0; i < 1000; i += 2)
+        {
             tree.insert(i);
         }
         int original_size = tree.size();
-        
+
         // Bulk insert some odd numbers scattered throughout
         std::vector<int> bulk = {1, 101, 501, 901};
         tree.bulk_insert(bulk.begin(), bulk.end());
-        
+
         assert(tree.size() == original_size + bulk.size());
-        for(int x : bulk) {
+        for (int x : bulk)
+        {
             assert(tree.contains(x));
         }
         std::cout << "Large tree small bulk case 5 passed" << std::endl;
     }
 }
 
-int main() {
+int main()
+{
     std::cout << "Starting bulk_insert tests..." << std::endl;
-    
+
     test_edge_cases();
     test_normal_cases();
     test_tree_larger_than_bulk();
-    
+
     std::cout << "\nAll tests passed successfully!" << std::endl;
     return 0;
 }
