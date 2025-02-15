@@ -122,7 +122,7 @@ typename AVLTree<T>::Node* AVLTree<T>::rotateRight(Node* y) {
     }
     else if (y->left == nullptr) {
         std::cout<<"node->left is nullptr during rotateRight"<<std::endl;
-        return y
+        return y;
     }
 
     Node* x = y->left;
