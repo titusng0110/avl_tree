@@ -125,24 +125,24 @@ typename AVLTree<T>::Node *AVLTree<T>::buildFromSorted(const std::vector<T> &key
     int balance = getBalance(node);
     // Left Left Case
     if (balance > 1 && getBalance(node->left) >= 0)
-        return rotateRight(node);
+        node = rotateRight(node);
 
     // Right Right Case
     if (balance < -1 && getBalance(node->right) <= 0)
-        return rotateLeft(node);
+        node = rotateLeft(node);
 
     // Left Right Case
     if (balance > 1 && getBalance(node->left) < 0)
     {
         node->left = rotateLeft(node->left);
-        return rotateRight(node);
+        node = rotateRight(node);
     }
 
     // Right Left Case
     if (balance < -1 && getBalance(node->right) > 0)
     {
         node->right = rotateRight(node->right);
-        return rotateLeft(node);
+        node = rotateLeft(node);
     }
 
     return node;
