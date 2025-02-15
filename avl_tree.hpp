@@ -201,9 +201,6 @@ typename AVLTree<T>::Node *AVLTree<T>::insert(Node *node, const T &key, int amou
         return newNode;
     }
 
-    bool wasMin = (node == min_node);
-    bool wasMax = (node == max_node);
-
     if (key < node->key)
         node->left = insert(node->left, key, amount);
     else if (key > node->key)
@@ -235,9 +232,9 @@ typename AVLTree<T>::Node *AVLTree<T>::insert(Node *node, const T &key, int amou
 
     // If the node was previously min or max and was rotated,
     // we need to update the cached pointers
-    if (wasMin || (min_node && key < min_node->key))
+    if (min_node && key < min_node->key)
         updateMinNode();
-    if (wasMax || (max_node && key > max_node->key))
+    if (max_node && key > max_node->key)
         updateMaxNode();
 
     return node;
@@ -367,9 +364,9 @@ typename AVLTree<T>::Node *AVLTree<T>::remove(Node *node, const T &key, int amou
         node = rotateLeft(node);
     }
 
-    if (wasMin || (min_node && key <= min_node->key))
+    if (wasMin)
         updateMinNode();
-    if (wasMax || (max_node && key >= max_node->key))
+    if (wasMax)
         updateMaxNode();
 
     return node;
