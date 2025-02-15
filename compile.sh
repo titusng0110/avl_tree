@@ -17,7 +17,7 @@ if [ ! -f "$input_file" ] || [[ ! "$input_file" =~ \.cpp$ ]]; then
 fi
 
 # Compile the C++ file
-g++ -std=c++17 -Wall -Wextra -pedantic -O3 "$input_file" -o a.out
+g++ -std=c++11 -Wall -Wextra -pedantic -O3 "$input_file" -o a.out
 
 # Check if compilation was successful
 if [ $? -ne 0 ]; then
