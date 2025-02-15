@@ -250,6 +250,8 @@ typename AVLTree<T>::Node* AVLTree<T>::remove(Node* node, const T &key, int amou
             
             // Case 1: node has 0 or 1 child.
             if (node->left == nullptr || node->right == nullptr) {
+                total_count -= node->count;
+                distinct_count--;
                 Node* temp = node->left ? node->left : node->right;
                 if (temp == nullptr) {
                     // No children: free the node and return nullptr.
@@ -261,8 +263,6 @@ typename AVLTree<T>::Node* AVLTree<T>::remove(Node* node, const T &key, int amou
                     node = temp;
                     delete oldNode;
                 }
-                total_count -= node->count;
-                distinct_count--;
             }
             // Case 2: node has two children.
             else {
