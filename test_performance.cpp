@@ -74,10 +74,15 @@ void run_performance_test(size_t data_size) {
 
     // Test insert (50000 operations)
     {
+        std::cout<<"fff"<<std::endl;
         auto test_data = generate_random_integers(50000);
+        std::cout<<"ggg"<<std::endl;
         Timer t1;
+        std::cout<<"hhh"<<std::endl;
         for (int val : test_data) avl.insert(val);
+        std::cout<<"iii"<<std::endl;
         double avl_time = t1.elapsed();
+        std::cout<<"jjj"<<std::endl;
         
         Timer t2;
         for (int val : test_data) set.insert(val);
