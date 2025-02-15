@@ -243,6 +243,8 @@ void test_avl_tree()
 
         if (!std_set.empty())
         {
+            std::cout << "AVL min: " << avl.min() << ", std::multiset min: " << *std_set.begin() << std::endl;
+            std::cout << "AVL max: " << avl.max() << ", std::multiset max: " << *std::prev(std_set.end()) << std::endl;
             assert(avl.min() == *std_set.begin());
             assert(avl.max() == *std::prev(std_set.end()));
         }
