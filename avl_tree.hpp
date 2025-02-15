@@ -247,8 +247,6 @@ typename AVLTree<T>::Node* AVLTree<T>::remove(Node* node, const T &key, int amou
             return node;
         } else {
             // Remove the entire node.
-            total_count -= node->count;
-            distinct_count--;
             
             // Case 1: node has 0 or 1 child.
             if (node->left == nullptr || node->right == nullptr) {
@@ -263,6 +261,8 @@ typename AVLTree<T>::Node* AVLTree<T>::remove(Node* node, const T &key, int amou
                     node = temp;
                     delete oldNode;
                 }
+                total_count -= node->count;
+                distinct_count--;
             }
             // Case 2: node has two children.
             else {
