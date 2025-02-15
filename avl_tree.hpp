@@ -218,30 +218,29 @@ typename AVLTree<T>::Node *AVLTree<T>::insert(Node *node, const T &key, int amou
     node->height = 1 + std::max(height(node->left), height(node->right));
     int balance = getBalance(node);
 
-    Node *result = node;
     if (balance > 1 && key < node->left->key)
-        result = rotateRight(node);
+        node = rotateRight(node);
     else if (balance < -1 && key > node->right->key)
-        result = rotateLeft(node);
+        node = rotateLeft(node);
     else if (balance > 1 && key > node->left->key)
     {
         node->left = rotateLeft(node->left);
-        result = rotateRight(node);
+        node = rotateRight(node);
     }
     else if (balance < -1 && key < node->right->key)
     {
         node->right = rotateRight(node->right);
-        result = rotateLeft(node);
+        node = rotateLeft(node);
     }
 
     // If the node was previously min or max and was rotated,
     // we need to update the cached pointers
-    if (wasMin || key < min_node->key)
+    if (wasMin || (min_node && key < min_node->key))
         updateMinNode();
-    if (wasMax || key > max_node->key)
+    if (wasMax || (max_node && key > max_node->key))
         updateMaxNode();
 
-    return result;
+    return node;
 }
 
 template <typename T>
@@ -348,24 +347,24 @@ typename AVLTree<T>::Node *AVLTree<T>::remove(Node *node, const T &key, int amou
     // Rebalance if needed.
     // Left Left Case
     if (balance > 1 && getBalance(node->left) >= 0)
-        return rotateRight(node);
+        node = rotateRight(node);
 
     // Right Right Case
     if (balance < -1 && getBalance(node->right) <= 0)
-        return rotateLeft(node);
+        node = rotateLeft(node);
 
     // Left Right Case
     if (balance > 1 && getBalance(node->left) < 0)
     {
         node->left = rotateLeft(node->left);
-        return rotateRight(node);
+        node = rotateRight(node);
     }
 
     // Right Left Case
     if (balance < -1 && getBalance(node->right) > 0)
     {
         node->right = rotateRight(node->right);
-        return rotateLeft(node);
+        node = rotateLeft(node);
     }
 
     if (wasMin || (min_node && key <= min_node->key))
