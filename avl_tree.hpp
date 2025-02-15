@@ -45,7 +45,6 @@ private:
 public:
     AVLTree();
     ~AVLTree();
-    void init_from_vector(const std::vector<T> &keys);
     void insert(const T &key);
     void insert_multiple(const T &key, int amount);
     template <typename Iterator>
@@ -410,21 +409,6 @@ void AVLTree<T>::inorder(Node *node, std::vector<T> &result) const
 }
 
 // Public Methods
-template <typename T>
-void AVLTree<T>::init_from_vector(const std::vector<T> &keys)
-{
-    clear();
-    if (keys.empty())
-        return;
-
-    std::vector<T> sorted_keys = keys;
-    std::sort(sorted_keys.begin(), sorted_keys.end());
-    root = buildFromSorted(sorted_keys, 0, sorted_keys.size() - 1);
-
-    updateMinNode();
-    updateMaxNode();
-}
-
 template <typename T>
 void AVLTree<T>::insert(const T &key)
 {
