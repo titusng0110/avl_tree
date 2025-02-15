@@ -62,10 +62,15 @@ void run_performance_test(size_t data_size) {
     }
 
     // Initialize containers for other tests
+    std::cout<<"aaa"<<std::endl;
     AVLTree<int> avl;
+    std::cout<<"bbb"<<std::endl;
     std::multiset<int> set;
+    std::cout<<"ccc"<<std::endl;
     avl.init_from_vector(data);
+    std::cout<<"ddd"<<std::endl;
     set.insert(data.begin(), data.end());
+    std::cout<<"eee"<<std::endl;
 
     // Test insert (50000 operations)
     {
@@ -85,10 +90,8 @@ void run_performance_test(size_t data_size) {
 
     avl.clear();
     set.clear();
-    std::cout << "Cleared AVL and std::multiset" << std::endl;
     avl.init_from_vector(data);
     set.insert(data.begin(), data.end());
-    std::cout<<"Inserted data into AVL and std::multiset"<<std::endl;
 
     // Test insert_multiple (50000 operations)
     {
