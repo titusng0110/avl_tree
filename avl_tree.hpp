@@ -193,12 +193,18 @@ typename AVLTree<T>::Node* AVLTree<T>::insert(Node* node, const T &key, int amou
 
     // Left Right Case
     if (balance > 1 && node->left && key > node->left->key) {
+        if(node->left->right == nullptr) {
+            std::cout<<"node->left->right is nullptr during insert"<<std::endl;
+        }
         node->left = rotateLeft(node->left);
         return rotateRight(node);
     }
 
     // Right Left Case
     if (balance < -1 && node->right && key < node->right->key) {
+        if(node->right->left == nullptr) {
+            std::cout<<"node->right->left is nullptr during insert"<<std::endl;
+        }
         node->right = rotateRight(node->right);
         return rotateLeft(node);
     }
