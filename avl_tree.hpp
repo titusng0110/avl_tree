@@ -151,10 +151,10 @@ typename AVLTree<T>::Node* AVLTree<T>::insert(Node* node, const T &key, int amou
         total_count += amount;
         return node;
     }
-
+    std::cout << "AAA AAA" << std::endl;
     node->height = 1 + std::max(height(node->left), height(node->right));
     int balance = getBalance(node);
-
+    std::cout << "BBB BBB" << std::endl;
     // Left Left Case
     if (balance > 1 && key < node->left->key)
         return rotateRight(node);
@@ -174,7 +174,7 @@ typename AVLTree<T>::Node* AVLTree<T>::insert(Node* node, const T &key, int amou
         node->right = rotateRight(node->right);
         return rotateLeft(node);
     }
-
+    std::cout << "CCC CCC" << std::endl;
     return node;
 }
 
