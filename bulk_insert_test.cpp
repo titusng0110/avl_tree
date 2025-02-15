@@ -208,7 +208,7 @@ void test_tree_larger_than_bulk()
         {
             tree.insert(i * 2); // Even numbers
         }
-        int original_size = tree.size();
+        size_t original_size = tree.size();
 
         // Small bulk insert
         std::vector<int> small_bulk = {1, 3, 5, 7, 9}; // Odd numbers
@@ -228,7 +228,7 @@ void test_tree_larger_than_bulk()
         {
             tree.insert(i);
         }
-        int original_size = tree.size();
+        size_t original_size = tree.size();
 
         // Bulk insert with some duplicates
         std::vector<int> bulk = {0, 1, 2, 499, 500}; // Some existing, one new
@@ -248,7 +248,7 @@ void test_tree_larger_than_bulk()
         {
             tree.insert(i);
         }
-        int original_size = tree.size();
+        size_t original_size = tree.size();
 
         // Bulk insert numbers below, within, and above the range
         std::vector<int> bulk = {500, 1500, 2500};
@@ -268,7 +268,7 @@ void test_tree_larger_than_bulk()
         {
             tree.insert(i);
         }
-        int original_size = tree.size();
+        size_t original_size = tree.size();
 
         // Bulk insert at boundaries
         std::vector<int> bulk = {99, 1000}; // Just outside current min/max
