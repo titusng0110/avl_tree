@@ -141,16 +141,6 @@ int AVLTree<T>::getBalance(Node* node) const {
 
 template <typename T>
 typename AVLTree<T>::Node* AVLTree<T>::rotateRight(Node* y) {
-    if (y == nullptr) {
-        // Handle error or return nullptr
-        std::cout<<"node is nullptr during rotateRight"<<std::endl;
-        return y;
-    }
-    else if (y->left == nullptr) {
-        std::cout<<"node->left is nullptr during rotateRight"<<std::endl;
-        return y;
-    }
-
     Node* x = y->left;
     Node* T2 = x->right;
 
@@ -166,16 +156,6 @@ typename AVLTree<T>::Node* AVLTree<T>::rotateRight(Node* y) {
 
 template <typename T>
 typename AVLTree<T>::Node* AVLTree<T>::rotateLeft(Node* x) {
-    if (x == nullptr) {
-        // Handle error or return nullptr
-        std::cout<<"node is nullptr during rotateLeft"<<std::endl;
-        return x;
-    }
-    else if (x->right == nullptr) {
-        std::cout<<"node->right is nullptr during rotateLeft"<<std::endl;
-        return x;
-    }
-
     Node* y = x->right;
     Node* T2 = y->left;
 
@@ -219,14 +199,12 @@ typename AVLTree<T>::Node* AVLTree<T>::insert(Node* node, const T &key, int amou
 
     // Left Right Case
     if (balance > 1 && key > node->left->key) {
-
         node->left = rotateLeft(node->left);
         return rotateRight(node);
     }
 
     // Right Left Case
     if (balance < -1 && key < node->right->key) {
-
         node->right = rotateRight(node->right);
         return rotateLeft(node);
     }
