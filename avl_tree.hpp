@@ -23,17 +23,18 @@ private:
     int distinct_count;
     int total_count;
 
-    int height(Node* node);
+    int height(Node* node) const;
     Node* buildFromSorted(const std::vector<T>& keys, int start, int end);
-    int getBalance(Node* node);
+    int getBalance(Node* node) const;
     Node* rotateRight(Node* y);
     Node* rotateLeft(Node* x);
     Node* insert(Node* node, const T &key, int amount);
     Node* minValueNode(Node* node);
+    Node* maxValueNode(Node* node);
     Node* remove(Node* node, const T &key, int amount);
     void clear(Node* node);
     Node* lower_bound(Node* node, const T &key) const;
-    void inorder(Node* node);
+    void inorder(Node* node) const;
 
 public:
     AVLTree();
@@ -45,13 +46,13 @@ public:
     void remove_all(const T &key);
     void remove(const T &key);
     Node* lower_bound(const T &key) const;
-    T min();
-    T max();
+    T min() const;
+    T max() const;
     T pop_min();
     T pop_max();
     int size() const;
     void clear();
-    void print_inorder();
+    void print_inorder() const;
 };
 
 // Constructor and Destructor
@@ -65,7 +66,7 @@ AVLTree<T>::~AVLTree() {
 
 // Private Helper Methods
 template <typename T>
-int AVLTree<T>::height(Node* node) {
+int AVLTree<T>::height(Node* node) const {
     return (node == nullptr) ? 0 : node->height;
 }
 
@@ -107,7 +108,7 @@ typename AVLTree<T>::Node* AVLTree<T>::buildFromSorted(const std::vector<T>& key
 }
 
 template <typename T>
-int AVLTree<T>::getBalance(Node* node) {
+int AVLTree<T>::getBalance(Node* node) const {
     return (node == nullptr) ? 0 : height(node->left) - height(node->right);
 }
 
@@ -181,6 +182,14 @@ typename AVLTree<T>::Node* AVLTree<T>::minValueNode(Node* node) {
     Node* current = node;
     while (current->left != nullptr)
         current = current->left;
+    return current;
+}
+
+template <typename T>
+typename AVLTree<T>::Node* AVLTree<T>::maxValueNode(Node* node) {
+    Node* current = node;
+    while (current->right != nullptr)
+        current = current->right;
     return current;
 }
 
@@ -284,7 +293,7 @@ typename AVLTree<T>::Node* AVLTree<T>::lower_bound(Node* node, const T &key) con
 }
 
 template <typename T>
-void AVLTree<T>::inorder(Node* node) {
+void AVLTree<T>::inorder(Node* node) const {
     if (node) {
         inorder(node->left);
         for (int i = 0; i < node->count; ++i)
@@ -322,11 +331,15 @@ void AVLTree<T>::insert_multiple(const T &key, int amount) {
 }
 
 template <typename T>
+void AVLTree<T>::remove(const T &key) {
+    root = remove(root, key, 1);
+}
+
+template <typename T>
 void AVLTree<T>::remove_multiple(const T &key, int amount) {
     if (amount <= 0) return;
     Node* lb = lower_bound(root, key);
     if (lb == nullptr || lb->key != key) return;
-    amount = std::min(amount, lb->count);  // Only remove up to available count
     root = remove(root, key, amount);
 }
 
@@ -338,17 +351,12 @@ void AVLTree<T>::remove_all(const T &key) {
 }
 
 template <typename T>
-void AVLTree<T>::remove(const T &key) {
-    root = remove(root, key, 1);
-}
-
-template <typename T>
 typename AVLTree<T>::Node* AVLTree<T>::lower_bound(const T &key) const {
     return lower_bound(root, key);
 }
 
 template <typename T>
-T AVLTree<T>::min() {
+T AVLTree<T>::min() const {
     if (root == nullptr)
         throw std::runtime_error("Tree is empty");
     Node* node = minValueNode(root);
@@ -356,13 +364,11 @@ T AVLTree<T>::min() {
 }
 
 template <typename T>
-T AVLTree<T>::max() {
+T AVLTree<T>::max() const {
     if (root == nullptr)
         throw std::runtime_error("Tree is empty");
-    Node* current = root;
-    while (current->right != nullptr)
-        current = current->right;
-    return current->key;
+    Node* node = maxValueNode(root);
+    return node->key;
 }
 
 template <typename T>
@@ -390,7 +396,7 @@ void AVLTree<T>::clear() {
 }
 
 template <typename T>
-void AVLTree<T>::print_inorder() {
+void AVLTree<T>::print_inorder() const {
     inorder(root);
     std::cout << std::endl;
 }
