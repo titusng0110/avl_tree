@@ -208,6 +208,7 @@ void test_tree_larger_than_bulk()
         std::cout<<"bbb"<<std::endl; 
         for (int i = 0; i < 1000; i++)
         {
+            std::cout<<i<<std::endl;
             tree.insert(i * 2); // Even numbers
         }
         std::cout<<"ccc"<<std::endl; 

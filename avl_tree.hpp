@@ -425,28 +425,27 @@ void AVLTree<T>::bulk_insert(Iterator begin, Iterator end)
         }
         return;
     }
-    std::cout<<"AAA"<<std::endl;
+
     // Get current elements in sorted order
     std::vector<T> current;
     inorder(root, current);
-    std::cout<<"BBB"<<std::endl;
+
     // Sort the bulk elements
     std::vector<T> bulk_elements(begin, end);
     std::sort(bulk_elements.begin(), bulk_elements.end());
-    std::cout<<"CCC"<<std::endl;
+
     // Merge current and bulk elements
     std::vector<T> merged;
     merged.reserve(current.size() + bulk_size);
     std::merge(current.begin(), current.end(),
                bulk_elements.begin(), bulk_elements.end(),
                std::back_inserter(merged));
-    std::cout<<"DDD"<<std::endl;
+
     // Rebuild tree
     clear();
     root = buildFromSorted(merged, 0, merged.size() - 1);
     updateMinNode();
     updateMaxNode();
-    std::cout<<"EEE"<<std::endl;
 }
 
 template <typename T>
