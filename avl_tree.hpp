@@ -102,24 +102,36 @@ typename AVLTree<T>::Node* AVLTree<T>::buildFromSorted(const std::vector<T>& key
     int rightStart = mid + 1;
     while (rightStart <= end && keys[rightStart] == keys[mid]) rightStart++;
 
-    try {
-        node->left = buildFromSorted(keys, start, leftEnd);
-        node->right = buildFromSorted(keys, rightStart, end);
+    
+    node->left = buildFromSorted(keys, start, leftEnd);
+    node->right = buildFromSorted(keys, rightStart, end);
 
-        node->height = 1 + std::max(height(node->left), height(node->right));
-        
-        // Check balance factor and rotate if necessary
-        int balance = getBalance(node);
-        if (balance > 1 || balance < -1) {
-            node = rebalance(node);
-        }
-        
-        return node;
+    node->height = 1 + std::max(height(node->left), height(node->right));
+    
+    // Check balance factor and rotate if necessary
+    int balance = getBalance(node);
+    // Left Left Case
+    if (balance > 1 && getBalance(node->left) >= 0)
+    return rotateRight(node);
+
+    // Right Right Case
+    if (balance < -1 && getBalance(node->right) <= 0)
+    return rotateLeft(node);
+
+    // Left Right Case
+    if (balance > 1 && getBalance(node->left) < 0) {
+        node->left = rotateLeft(node->left);
+        return rotateRight(node);
     }
-    catch (...) {
-        delete node;
-        throw;
+
+    // Right Left Case
+    if (balance < -1 && getBalance(node->right) > 0) {
+        node->right = rotateRight(node->right);
+        return rotateLeft(node);
     }
+    
+    return node;
+    
 }
 
 template <typename T>
