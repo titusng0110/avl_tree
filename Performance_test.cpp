@@ -145,22 +145,18 @@ void run_performance_test(size_t data_size)
         double avl_time = 0, set_time = 0;
         for (int i = 0; i < 10; ++i)
         {
-            std::cout<<"aaa"<<std::endl;
             auto test_data = generate_random_integers(data_size);
-            std::cout<<"bbb"<<std::endl;
+            
             Timer t1;
             avl.bulk_insert(test_data.begin(), test_data.end());
             avl_time += t1.elapsed();
-            std::cout<<"ccc"<<std::endl;
             Timer t2;
             set.insert(test_data.begin(), test_data.end());
             set_time += t2.elapsed();
 
             avl.clear();
-            std::cout<<"ddd"<<std::endl;
             set.clear();
             avl.init_from_vector(data);
-            std::cout<<"eee"<<std::endl;
             set.insert(data.begin(), data.end());
         }
 
