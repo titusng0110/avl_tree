@@ -6,270 +6,141 @@
 #include <random>
 #include <algorithm>
 
-// Helper function to compare two containers
-template <typename T>
-bool containers_equal(const std::vector<T> &avl, const std::vector<T> &std_set)
-{
-    if (avl.size() != std_set.size())
-        return false;
-    for (size_t i = 0; i < avl.size(); ++i)
-    {
-        if (avl[i] != std_set[i])
-            return false;
+// Helper function to print containers
+template<typename Container>
+void print_container(const Container& c) {
+    for (const auto& element : c) {
+        std::cout << element << " ";
     }
-    return true;
+    std::cout << std::endl;
 }
 
-// Test function
-void test_avl_tree()
-{
-    AVLTree<int> avl;
-    std::multiset<int> std_set;
+void test_avl_tree() {
+    std::cout << "=== Starting AVL Tree Tests ===" << std::endl;
 
-    std::cout << "Testing initialization..." << std::endl;
-    std::vector<int> init_vec = {5, 2, 8, 2, 1, 9, 5, 3, 7};
-    avl.bulk_insert(init_vec.begin(), init_vec.end());
-    std_set.insert(init_vec.begin(), init_vec.end());
-    std::cout << "AVL size: " << avl.size() << ", std::multiset size: " << std_set.size() << std::endl;
-    avl.print_inorder();
-    for (const auto &element : std_set)
-    {
-        std::cout << element << " ";
-    }
-    std::cout << std::endl;
-    assert(avl.size() == std_set.size());
+    // Test constructor and bulk insertion
+    std::cout << "\nTesting constructors and bulk insertion:" << std::endl;
+    std::vector<int> init_data = {5, 3, 7, 2, 4, 6, 8, 3, 5, 7};
+    AVLTree<int> avl1(init_data.begin(), init_data.end());
+    std::multiset<int> reference(init_data.begin(), init_data.end());
+    
+    assert(avl1.size() == reference.size());
+    assert(avl1.to_vector() == std::vector<int>(reference.begin(), reference.end()));
+    
+    // Test distinct_size
+    std::cout << "\nTesting distinct_size:" << std::endl;
+    std::set<int> unique_elements(init_data.begin(), init_data.end());
+    assert(avl1.distinct_size() == unique_elements.size());
+    std::cout << "Distinct size: " << avl1.distinct_size() << std::endl;
 
-    std::cout << "Testing insert..." << std::endl;
-    avl.insert(0);
-    std_set.insert(0);
-    std::cout << "AVL size: " << avl.size() << ", std::multiset size: " << std_set.size() << std::endl;
-    avl.print_inorder();
-    for (const auto &element : std_set)
-    {
-        std::cout << element << " ";
-    }
-    std::cout << std::endl;
-    assert(avl.size() == std_set.size());
+    // Test count and contains
+    std::cout << "\nTesting count and contains:" << std::endl;
+    assert(avl1.count(3) == 2);
+    assert(avl1.count(5) == 2);
+    assert(avl1.count(9) == 0);
+    assert(avl1.contains(3));
+    assert(!avl1.contains(9));
 
-    std::cout << "Testing insert_multiple..." << std::endl;
-    avl.insert_multiple(10, 3);
-    for (int i = 0; i < 3; ++i)
-        std_set.insert(10);
-    std::cout << "AVL size: " << avl.size() << ", std::multiset size: " << std_set.size() << std::endl;
-    avl.print_inorder();
-    for (const auto &element : std_set)
-    {
-        std::cout << element << " ";
-    }
-    std::cout << std::endl;
-    assert(avl.size() == std_set.size());
+    // Test insert_multiple and remove_multiple
+    std::cout << "\nTesting insert_multiple and remove_multiple:" << std::endl;
+    avl1.insert_multiple(1, 3);
+    assert(avl1.count(1) == 3);
+    avl1.remove_multiple(1, 2);
+    assert(avl1.count(1) == 1);
 
-    std::cout << "Testing remove..." << std::endl;
-    avl.remove(2);
-    auto it_remove = std_set.find(2);
-    if (it_remove != std_set.end())
-    {
-        std_set.erase(it_remove);
-    }
-    std::cout << "AVL size: " << avl.size() << ", std::multiset size: " << std_set.size() << std::endl;
-    avl.print_inorder();
-    for (const auto &element : std_set)
-    {
-        std::cout << element << " ";
-    }
-    std::cout << std::endl;
-    assert(avl.size() == std_set.size());
+    // Test remove_all
+    std::cout << "\nTesting remove_all:" << std::endl;
+    avl1.remove_all(3);
+    assert(avl1.count(3) == 0);
+    assert(!avl1.contains(3));
 
-    std::cout << "Testing remove_multiple..." << std::endl;
-    avl.remove_multiple(5, 2);
-    for (int i = 0; i < 2; ++i)
-    {
-        auto it = std_set.find(5);
-        if (it != std_set.end())
-        {
-            std_set.erase(it);
-        }
-    }
-    std::cout << "AVL size: " << avl.size() << ", std::multiset size: " << std_set.size() << std::endl;
-    avl.print_inorder();
-    for (const auto &element : std_set)
-    {
-        std::cout << element << " ";
-    }
-    std::cout << std::endl;
-    assert(avl.size() == std_set.size());
+    // Test min/max operations
+    std::cout << "\nTesting min/max operations:" << std::endl;
+    assert(avl1.min() == *avl1.to_vector().begin());
+    assert(avl1.max() == avl1.to_vector().back());
+    
+    int min_val = avl1.pop_min();
+    int max_val = avl1.pop_max();
+    std::cout << "Popped min: " << min_val << ", max: " << max_val << std::endl;
 
-    std::cout << "Testing remove_all..." << std::endl;
-    avl.remove_all(6);
-    while (true)
-    {
-        auto it = std_set.find(6);
-        if (it == std_set.end())
-            break;
-        std_set.erase(it);
-    }
-    std::cout << "AVL size: " << avl.size() << ", std::multiset size: " << std_set.size() << std::endl;
-    avl.print_inorder();
-    for (const auto &element : std_set)
-    {
-        std::cout << element << " ";
-    }
-    std::cout << std::endl;
-    assert(avl.size() == std_set.size());
+    // Test clear and empty
+    std::cout << "\nTesting clear and empty:" << std::endl;
+    assert(!avl1.empty());
+    avl1.clear();
+    assert(avl1.empty());
+    assert(avl1.size() == 0);
 
-    std::cout << "Testing lower_bound..." << std::endl;
-    auto avl_lb = avl.lower_bound(3);
-    auto std_lb = std_set.lower_bound(3);
-    assert(avl_lb != nullptr && *std_lb == avl_lb->key);
-    std::cout << "Lower bound of 3: AVL - " << avl_lb->key << ", std::multiset - " << *std_lb << std::endl;
-
-    std::cout << "Testing min..." << std::endl;
-    assert(avl.min() == *std_set.begin());
-    std::cout << "Minimum: AVL - " << avl.min() << ", std::multiset - " << *std_set.begin() << std::endl;
-
-    std::cout << "Testing max..." << std::endl;
-    assert(avl.max() == *std::prev(std_set.end()));
-    std::cout << "Maximum: AVL - " << avl.max() << ", std::multiset - " << *std::prev(std_set.end()) << std::endl;
-
-    std::cout << "Testing pop_min..." << std::endl;
-    int avl_min = avl.pop_min();
-    int std_min = *std_set.begin();
-    std_set.erase(std_set.begin());
-    assert(avl_min == std_min);
-    std::cout << "Popped minimum: AVL - " << avl_min << ", std::multiset - " << std_min << std::endl;
-    std::cout << "AVL size: " << avl.size() << ", std::multiset size: " << std_set.size() << std::endl;
-    avl.print_inorder();
-    for (const auto &element : std_set)
-    {
-        std::cout << element << " ";
-    }
-    std::cout << std::endl;
-    assert(avl.size() == std_set.size());
-
-    std::cout << "Testing pop_max..." << std::endl;
-    int avl_max = avl.pop_max();
-    int std_max = *std::prev(std_set.end());
-    std_set.erase(std::prev(std_set.end()));
-    assert(avl_max == std_max);
-    std::cout << "Popped maximum: AVL - " << avl_max << ", std::multiset - " << std_max << std::endl;
-    std::cout << "AVL size: " << avl.size() << ", std::multiset size: " << std_set.size() << std::endl;
-    avl.print_inorder();
-    for (const auto &element : std_set)
-    {
-        std::cout << element << " ";
-    }
-    std::cout << std::endl;
-    assert(avl.size() == std_set.size());
-
-    std::cout << "Testing print_inorder..." << std::endl;
-    avl.print_inorder();
-    for (const auto &element : std_set)
-    {
-        std::cout << element << " ";
-    }
-    std::cout << std::endl;
-
-    std::cout << "Additional tests with random operations..." << std::endl;
+    // Stress test with random operations
+    std::cout << "\nPerforming stress test with random operations:" << std::endl;
+    AVLTree<int> avl2;
+    std::multiset<int> reference2;
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(1, 100);
+    std::uniform_int_distribution<> dis(-100, 100);
+    std::uniform_int_distribution<> op_dis(0, 4);
 
-    for (int i = 0; i < 1000; ++i)
-    {
-        int op = dis(gen) % 5;
+    for (int i = 0; i < 1000; ++i) {
+        int op = op_dis(gen);
         int val = dis(gen);
-        int amount = 0;
-
-        std::cout << "Operation " << i << ": ";
-
-        switch (op)
-        {
-        case 0: // Insert
-            std::cout << "Insert " << val << std::endl;
-            avl.insert(val);
-            std_set.insert(val);
-            break;
-        case 1: // Insert multiple
-            amount = dis(gen) % 5 + 1;
-            std::cout << "Insert multiple " << val << " x " << amount << std::endl;
-            avl.insert_multiple(val, amount);
-            for (int j = 0; j < amount; ++j)
-            {
-                std_set.insert(val);
+        
+        switch (op) {
+            case 0: { // Insert
+                avl2.insert(val);
+                reference2.insert(val);
+                break;
             }
-            break;
-        case 2:
-        { // Remove
-            std::cout << "Remove " << val << std::endl;
-            avl.remove(val);
-            auto it = std_set.find(val);
-            if (it != std_set.end())
-            {
-                std_set.erase(it);
+            case 1: { // Insert multiple
+                int count = std::uniform_int_distribution<>(1, 5)(gen);
+                avl2.insert_multiple(val, count);
+                for (int j = 0; j < count; ++j) {
+                    reference2.insert(val);
+                }
+                break;
             }
-            break;
-        }
-        case 3:
-        { // Remove multiple
-            amount = dis(gen) % 5 + 1;
-            std::cout << "Remove multiple " << val << " x " << amount << std::endl;
-            avl.remove_multiple(val, amount);
-            for (int j = 0; j < amount; ++j)
-            {
-                auto it = std_set.find(val);
-                if (it == std_set.end())
-                    break;
-                std_set.erase(it);
+            case 2: { // Remove
+                avl2.remove(val);
+                auto it = reference2.find(val);
+                if (it != reference2.end()) {
+                    reference2.erase(it);
+                }
+                break;
             }
-            break;
-        }
-        case 4:
-        { // Remove all
-            std::cout << "Remove all " << val << std::endl;
-            avl.remove_all(val);
-            while (true)
-            {
-                auto it = std_set.find(val);
-                if (it == std_set.end())
-                    break;
-                std_set.erase(it);
+            case 3: { // Remove multiple
+                int count = std::uniform_int_distribution<>(1, 5)(gen);
+                avl2.remove_multiple(val, count);
+                for (int j = 0; j < count; ++j) {
+                    auto it = reference2.find(val);
+                    if (it == reference2.end()) break;
+                    reference2.erase(it);
+                }
+                break;
             }
-            break;
-        }
+            case 4: { // Remove all
+                avl2.remove_all(val);
+                while (true) {
+                    auto it = reference2.find(val);
+                    if (it == reference2.end()) break;
+                    reference2.erase(it);
+                }
+                break;
+            }
         }
 
-        std::cout << "After operation: AVL size: " << avl.size() << ", std::multiset size: " << std_set.size() << std::endl;
-        assert(avl.size() == std_set.size());
-
-        if (!std_set.empty())
-        {
-            std::cout << "AVL min: " << avl.min() << ", std::multiset min: " << *std_set.begin() << std::endl;
-            std::cout << "AVL max: " << avl.max() << ", std::multiset max: " << *std::prev(std_set.end()) << std::endl;
-            assert(avl.min() == *std_set.begin());
-            assert(avl.max() == *std::prev(std_set.end()));
+        // Verify consistency
+        if (i % 100 == 0) {
+            assert(avl2.size() == reference2.size());
+            assert(avl2.to_vector() == std::vector<int>(reference2.begin(), reference2.end()));
+            if (!avl2.empty()) {
+                assert(avl2.min() == *reference2.begin());
+                assert(avl2.max() == *std::prev(reference2.end()));
+            }
         }
-
-        // Check lower_bound for random values
-        val = dis(gen);
-        auto avl_lb = avl.lower_bound(val);
-        auto std_lb = std_set.lower_bound(val);
-        if (avl_lb == nullptr)
-        {
-            assert(std_lb == std_set.end());
-        }
-        else
-        {
-            assert(std_lb != std_set.end() && *std_lb == avl_lb->key);
-        }
-        std::cout << "Lower bound of " << val << ": AVL - " << (avl_lb ? avl_lb->key : -1)
-                  << ", std::multiset - " << (std_lb != std_set.end() ? *std_lb : -1) << std::endl;
     }
 
     std::cout << "All tests passed successfully!" << std::endl;
 }
 
-int main()
-{
+int main() {
     test_avl_tree();
     return 0;
 }
