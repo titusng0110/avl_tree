@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <stdexcept>
+#include <iostream>
 
 template <typename T>
 class AVLTree
@@ -93,41 +94,41 @@ short AVLTree<T>::height(Node *node) const
 template <typename T>
 typename AVLTree<T>::Node *AVLTree<T>::buildFromSorted(const std::vector<T> &keys, size_t start, size_t end)
 {
-    if (start > end)
+    if (start > end || start >= keys.size() || end >= keys.size())
         return nullptr;
 
-    // Safer mid calculation
+    // Calculate the middle index
     size_t mid = start + (end - start) / 2;
 
-    // Count duplicates
+    // Count duplicates around the middle element
     size_t count = 1;
-    size_t i = mid - 1;
-    while (i >= start && keys[i] == keys[mid])
-    {
+    
+    // Count duplicates to the left
+    size_t left_idx = mid;
+    while (left_idx > start && left_idx < end && keys[left_idx - 1] == keys[mid]) {
         count++;
-        i--;
+        if(left_idx == 0) break;
+        left_idx--;
     }
-    i = mid + 1;
-    while (i <= end && keys[i] == keys[mid])
-    {
+    
+    // Count duplicates to the right
+    size_t right_idx = mid;
+    while (right_idx < end && keys[right_idx + 1] == keys[mid]) {
         count++;
-        i++;
+        right_idx++;
     }
 
-    Node *node = new Node(keys[mid], count);
+    // Create a new node with the middle element and its count
+    Node* node = new Node(keys[mid], count);
     distinct_count++;
     total_count += count;
 
-    size_t leftEnd = mid - 1;
-    while (leftEnd >= start && keys[leftEnd] == keys[mid])
-        leftEnd--;
-
-    size_t rightStart = mid + 1;
-    while (rightStart <= end && keys[rightStart] == keys[mid])
-        rightStart++;
-
-    node->left = buildFromSorted(keys, start, leftEnd);
-    node->right = buildFromSorted(keys, rightStart, end);
+    // Recursively build left and right subtrees
+    // Skip the duplicates when recursing
+    if (left_idx > start && left_idx < end) // Check to prevent underflow
+        node->left = buildFromSorted(keys, start, left_idx - 1);
+    if (right_idx < end)  // Build right subtree
+        node->right = buildFromSorted(keys, right_idx + 1, end);
 
     node->height = 1 + std::max(height(node->left), height(node->right));
 

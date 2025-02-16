@@ -20,7 +20,7 @@ public:
 std::vector<int> generate_random_data(size_t count) {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dist(-1000000, 1000000);
+    std::uniform_int_distribution<int> dist(-10000000, 10000000);
     
     std::vector<int> data;
     data.reserve(count);
@@ -41,8 +41,8 @@ void benchmark_operations(size_t data_size) {
     std::cout << std::string(60, '-') << std::endl;
     std::cout << std::left 
               << std::setw(30) << "Operation" 
-              << std::setw(15) << "AVL (ms)"
-              << std::setw(15) << "STD (ms)" << std::endl;
+              << std::setw(15) << "AVLTree (ms)"
+              << std::setw(15) << "std::multiset (ms)" << std::endl;
     std::cout << std::string(60, '-') << std::endl;
 
     // Generate test data
@@ -156,7 +156,7 @@ void benchmark_operations(size_t data_size) {
     {
         AVLTree<int> avl(initial_data.begin(), initial_data.end());
         Timer t1;
-        for (int i = 0; i < 10000; ++i) {
+        for (int i = 0; i < 25000; ++i) {
             avl.min();
             avl.max();
         }
@@ -166,14 +166,14 @@ void benchmark_operations(size_t data_size) {
     {
         std::multiset<int> ms(initial_data.begin(), initial_data.end());
         Timer t2;
-        for (int i = 0; i < 10000; ++i) {
+        for (int i = 0; i < 25000; ++i) {
             auto min = ms.begin();
             auto max = --ms.end();
         }
         std_time = t2.elapsed();
         ms.clear();
     }
-    print_result("Min/Max (10K ops each)", avl_time, std_time);
+    print_result("Min/Max (25K ops each)", avl_time, std_time);
 
     // Test removals
     {
@@ -204,5 +204,6 @@ int main() {
     benchmark_operations(10000);
     benchmark_operations(100000);
     benchmark_operations(1000000);
+    benchmark_operations(10000000);
     return 0;
 }
