@@ -102,24 +102,27 @@ typename AVLTree<T>::Node *AVLTree<T>::buildFromSorted(const std::vector<T> &key
 
     // Count duplicates around the middle element
     size_t count = 1;
-    
+
     // Count duplicates to the left
     size_t left_idx = mid;
-    while (left_idx > start && left_idx < end && keys[left_idx - 1] == keys[mid]) {
+    while (left_idx > start && left_idx < end && keys[left_idx - 1] == keys[mid])
+    {
         count++;
-        if(left_idx == 0) break;
+        if (left_idx == 0)
+            break;
         left_idx--;
     }
-    
+
     // Count duplicates to the right
     size_t right_idx = mid;
-    while (right_idx < end && keys[right_idx + 1] == keys[mid]) {
+    while (right_idx < end && keys[right_idx + 1] == keys[mid])
+    {
         count++;
         right_idx++;
     }
 
     // Create a new node with the middle element and its count
-    Node* node = new Node(keys[mid], count);
+    Node *node = new Node(keys[mid], count);
     distinct_count++;
     total_count += count;
 
@@ -127,7 +130,7 @@ typename AVLTree<T>::Node *AVLTree<T>::buildFromSorted(const std::vector<T> &key
     // Skip the duplicates when recursing
     if (left_idx > start && left_idx < end) // Check to prevent underflow
         node->left = buildFromSorted(keys, start, left_idx - 1);
-    if (right_idx < end)  // Build right subtree
+    if (right_idx < end) // Build right subtree
         node->right = buildFromSorted(keys, right_idx + 1, end);
 
     node->height = 1 + std::max(height(node->left), height(node->right));
