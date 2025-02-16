@@ -1,0 +1,20 @@
+=== Starting AVL Tree Tests ===
+
+Testing constructors and bulk insertion:
+
+Testing distinct_size:
+Distinct size: 7
+
+Testing count and contains:
+
+Testing insert_multiple and remove_multiple:
+
+Testing remove_all:
+
+Testing min/max operations:
+Popped min: 1, max: 8
+
+Testing clear and empty:
+
+Performing stress test with random operations:
+All tests passed successfully!

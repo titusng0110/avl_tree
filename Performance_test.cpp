@@ -20,11 +20,11 @@ public:
     }
 };
 
-std::vector<int> generate_random_data(size_t count)
+std::vector<int> generate_random_data(size_t count, size_t data_size)
 {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dist(-10000000, 10000000);
+    std::uniform_int_distribution<int> dist(0, data_size*2);
 
     std::vector<int> data;
     data.reserve(count);
@@ -53,8 +53,8 @@ void benchmark_operations(size_t data_size)
     std::cout << std::string(60, '-') << std::endl;
 
     // Generate test data
-    auto initial_data = generate_random_data(data_size);
-    auto test_data = generate_random_data(50000);
+    const auto initial_data = generate_random_data(data_size, data_size);
+    const auto test_data = generate_random_data(50000, data_size);
 
     double avl_time, std_time;
 
@@ -75,7 +75,7 @@ void benchmark_operations(size_t data_size)
 
     // Test insertions
     {
-        AVLTree<int> avl;
+        AVLTree<int> avl(initial_data.begin(), initial_data.end());
         Timer t1;
         for (int val : test_data)
         {
@@ -85,7 +85,7 @@ void benchmark_operations(size_t data_size)
         avl.clear();
     }
     {
-        std::multiset<int> ms;
+        std::multiset<int> ms(initial_data.begin(), initial_data.end());
         Timer t2;
         for (int val : test_data)
         {
@@ -98,7 +98,7 @@ void benchmark_operations(size_t data_size)
 
     // Test multiple insertions
     {
-        AVLTree<int> avl;
+        AVLTree<int> avl(initial_data.begin(), initial_data.end());
         Timer t1;
         for (int val : test_data)
         {
@@ -108,7 +108,7 @@ void benchmark_operations(size_t data_size)
         avl.clear();
     }
     {
-        std::multiset<int> ms;
+        std::multiset<int> ms(initial_data.begin(), initial_data.end());
         Timer t2;
         for (int val : test_data)
         {
@@ -121,6 +121,33 @@ void benchmark_operations(size_t data_size)
         ms.clear();
     }
     print_result("Insert Multiple (50K×5)", avl_time, std_time);
+
+    // Test removals
+    {
+        AVLTree<int> avl(initial_data.begin(), initial_data.end());
+        Timer t1;
+        for (int val : test_data)
+        {
+            avl.remove(val);
+        }
+        avl_time = t1.elapsed();
+        avl.clear();
+    }
+    {
+        std::multiset<int> ms(initial_data.begin(), initial_data.end());
+        Timer t2;
+        for (int val : test_data)
+        {
+            auto it = ms.find(val);
+            if (it != ms.end())
+            {
+                ms.erase(it);
+            }
+        }
+        std_time = t2.elapsed();
+        ms.clear();
+    }
+    print_result("Remove (50K ops)", avl_time, std_time);
 
     // Test search operations
     {
@@ -138,7 +165,7 @@ void benchmark_operations(size_t data_size)
         Timer t2;
         for (int val : test_data)
         {
-            ms.count(val);
+            ms.find(val);
         }
         std_time = t2.elapsed();
         ms.clear();
@@ -193,13 +220,14 @@ void benchmark_operations(size_t data_size)
     }
     print_result("Min/Max (25K ops each)", avl_time, std_time);
 
-    // Test removals
+    // Test pop_min/pop_max operations
     {
         AVLTree<int> avl(initial_data.begin(), initial_data.end());
         Timer t1;
-        for (int val : test_data)
+        for (int i = 0; i < 25000; ++i)
         {
-            avl.remove(val);
+            avl.pop_min();
+            avl.pop_max();
         }
         avl_time = t1.elapsed();
         avl.clear();
@@ -207,23 +235,20 @@ void benchmark_operations(size_t data_size)
     {
         std::multiset<int> ms(initial_data.begin(), initial_data.end());
         Timer t2;
-        for (int val : test_data)
+        for (int i = 0; i < 25000; ++i)
         {
-            auto it = ms.find(val);
-            if (it != ms.end())
-            {
-                ms.erase(it);
-            }
+            ms.erase(ms.begin());
+            ms.erase(--ms.end());
         }
         std_time = t2.elapsed();
         ms.clear();
     }
-    print_result("Remove (50K ops)", avl_time, std_time);
+    print_result("Pop Min/Max (25K ops each)", avl_time, std_time);
 }
 
 int main()
 {
-    benchmark_operations(10000);
+    benchmark_operations(50000);
     benchmark_operations(100000);
     benchmark_operations(1000000);
     benchmark_operations(10000000);

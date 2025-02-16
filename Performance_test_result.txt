@@ -1,0 +1,52 @@
+
+Benchmarking with size: 50000
+------------------------------------------------------------
+Operation                     AVLTree (ms)   std::multiset (ms)
+------------------------------------------------------------
+Initialize                    4.28208        6.82904        
+Insert (50K ops)              10.0077        10.5156        
+Insert Multiple (50K×5)      10.1179        30.0093        
+Remove (50K ops)              9.98275        11.8395        
+Search (50K ops)              6.4e-05        3.8e-05        
+Count (50K ops)               4e-05          3.7e-05        
+Min/Max (25K ops each)        4.1e-05        7e-05          
+Pop Min/Max (25K ops each)    3.79779        1.3439         
+
+Benchmarking with size: 100000
+------------------------------------------------------------
+Operation                     AVLTree (ms)   std::multiset (ms)
+------------------------------------------------------------
+Initialize                    7.73524        13.1843        
+Insert (50K ops)              11.9767        9.81392        
+Insert Multiple (50K×5)      11.5222        36.6359        
+Remove (50K ops)              9.87752        11.2803        
+Search (50K ops)              6.3e-05        5.7e-05        
+Count (50K ops)               5.7e-05        5.3e-05        
+Min/Max (25K ops each)        6.3e-05        5.5e-05        
+Pop Min/Max (25K ops each)    4.09953        4.63518        
+
+Benchmarking with size: 1000000
+------------------------------------------------------------
+Operation                     AVLTree (ms)   std::multiset (ms)
+------------------------------------------------------------
+Initialize                    94.4553        452.049        
+Insert (50K ops)              25.8302        39.7339        
+Insert Multiple (50K×5)      25.7493        73.8707        
+Remove (50K ops)              26.1651        41.5111        
+Search (50K ops)              5.4e-05        5.2e-05        
+Count (50K ops)               4.5e-05        5.9e-05        
+Min/Max (25K ops each)        3.9e-05        6.5e-05        
+Pop Min/Max (25K ops each)    4.65576        2.79268        
+
+Benchmarking with size: 10000000
+------------------------------------------------------------
+Operation                     AVLTree (ms)   std::multiset (ms)
+------------------------------------------------------------
+Initialize                    1031.57        12480.2        
+Insert (50K ops)              44.8176        78.0451        
+Insert Multiple (50K×5)      44.9597        111.25         
+Remove (50K ops)              45.8509        97.22          
+Search (50K ops)              4.8e-05        6.2e-05        
+Count (50K ops)               5.2e-05        9.9e-05        
+Min/Max (25K ops each)        3.8e-05        6.9e-05        
+Pop Min/Max (25K ops each)    5.78654        4.62341        
