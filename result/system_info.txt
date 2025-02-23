@@ -1,0 +1,50 @@
+System:
+  Kernel: 5.15.167.4-microsoft-standard-WSL2 arch: x86_64 bits: 64
+    compiler: gcc v: 11.2.0 Desktop: N/A dm: N/A Distro: Debian GNU/Linux 12
+    (bookworm)
+Machine:
+  Message: No machine data: try newer kernel. Is dmidecode installed? Try -M
+    --dmidecode.
+Battery:
+  ID-1: BAT1 charge: 1.8 Wh (36.0%) condition: 5.0/5.0 Wh (100.0%) volts: 5.0
+    min: 5.0 model: Microsoft Hyper-V Virtual Batte serial: <filter>
+    status: discharging
+CPU:
+  Info: 6-core model: 13th Gen Intel Core i5-1335U bits: 64 type: MT MCP
+    arch: Raptor Lake rev: 3 cache: L1: 480 KiB L2: 7.5 MiB L3: 12 MiB
+  Speed (MHz): avg: 2496 min/max: N/A cores: 1: 2496 2: 2496 3: 2496 4: 2496
+    5: 2496 6: 2496 7: 2496 8: 2496 9: 2496 10: 2496 11: 2496 12: 2496
+    bogomips: 59901
+  Flags: avx avx2 ht lm nx pae sse sse2 sse3 sse4_1 sse4_2 ssse3 vmx
+Graphics:
+  Device-1: Microsoft Basic Render Driver driver: dxgkrnl v: 2.0.3
+    bus-ID: fda7:00:00.0 chip-ID: 1414:008e
+  Display: wayland server: Microsoft Corporation X.org driver: dri: swrast
+    gpu: dxgkrnl display-ID: :0 screens: 1
+  Screen-1: 0 s-res: 1920x1080 s-dpi: 96
+  Monitor-1: XWAYLAND0 res: 1920x1080 size: N/A
+  API: OpenGL v: 4.1 Mesa 22.3.6 renderer: D3D12 (Intel Iris Xe Graphics)
+    direct-render: Yes
+Audio:
+  Message: No device data found.
+Network:
+  Message: No PCI device data found.
+  IF-ID-1: docker0 state: down mac: <filter>
+  IF-ID-2: eth0 state: up speed: 10000 Mbps duplex: full mac: <filter>
+Drives:
+  Local Storage: total: 1 TiB used: 520.54 GiB (50.7%)
+  ID-1: /dev/sda model: Virtual Disk size: 388.4 MiB serial: N/A
+  ID-2: /dev/sdb model: Virtual Disk size: 2 GiB serial: N/A
+  ID-3: /dev/sdc model: Virtual Disk size: 1024 GiB serial: N/A
+Partition:
+  ID-1: / size: 1006.85 GiB used: 3.18 GiB (0.3%) fs: ext4 dev: /dev/sdc
+Swap:
+  ID-1: swap-1 type: partition size: 2 GiB used: 0 KiB (0.0%) priority: -2
+    dev: /dev/sdb
+Sensors:
+  Src: lm-sensors Message: No sensor data found. Is lm-sensors configured?
+Info:
+  Processes: 43 Uptime: 1h 9m Memory: 7.6 GiB used: 1.62 GiB (21.3%)
+  Init: systemd v: 252 target: graphical (5) default: graphical Compilers:
+  gcc: 12.2.0 alt: 12 Packages: pm: dpkg pkgs: 424 Shell: Bash v: 5.2.15
+  running-in: Relay(146) inxi: 3.3.26

@@ -1,13 +1,15 @@
-#ifndef AVL_TREE_HPP
-#define AVL_TREE_HPP
+#ifndef MULTISET_HPP
+#define MULTISET_HPP
 
 #include <vector>
 #include <algorithm>
 #include <stdexcept>
 #include <iostream>
 
+namespace AVLTree {
+
 template <typename T>
-class AVLTree
+class MultiSet
 {
 private:
     struct Node
@@ -43,10 +45,10 @@ private:
     void inorder(Node *node, std::vector<T> &result) const;
 
 public:
-    AVLTree();
+    MultiSet();
     template <typename Iterator>
-    AVLTree(Iterator begin, Iterator end);
-    ~AVLTree();
+    MultiSet(Iterator begin, Iterator end);
+    ~MultiSet();
     template <typename Iterator>
     void insert(Iterator begin, Iterator end);
     void insert(const T &key);
@@ -69,30 +71,30 @@ public:
 
 // Constructor and Destructor
 template <typename T>
-AVLTree<T>::AVLTree() : root(nullptr), min_node(nullptr), max_node(nullptr), distinct_count(0), total_count(0) {}
+MultiSet<T>::MultiSet() : root(nullptr), min_node(nullptr), max_node(nullptr), distinct_count(0), total_count(0) {}
 
 template <typename T>
 template <typename Iterator>
-AVLTree<T>::AVLTree(Iterator begin, Iterator end) : root(nullptr), min_node(nullptr), max_node(nullptr), distinct_count(0), total_count(0)
+MultiSet<T>::MultiSet(Iterator begin, Iterator end) : root(nullptr), min_node(nullptr), max_node(nullptr), distinct_count(0), total_count(0)
 {
     insert(begin, end);
 }
 
 template <typename T>
-AVLTree<T>::~AVLTree()
+MultiSet<T>::~MultiSet()
 {
     clear();
 }
 
 // Private Helper Methods
 template <typename T>
-short AVLTree<T>::height(Node *node) const
+short MultiSet<T>::height(Node *node) const
 {
     return (node == nullptr) ? 0 : node->height;
 }
 
 template <typename T>
-typename AVLTree<T>::Node *AVLTree<T>::buildFromSorted(const std::vector<T> &keys, size_t start, size_t end)
+typename MultiSet<T>::Node *MultiSet<T>::buildFromSorted(const std::vector<T> &keys, size_t start, size_t end)
 {
     if (start > end || start >= keys.size() || end >= keys.size())
         return nullptr;
@@ -160,13 +162,13 @@ typename AVLTree<T>::Node *AVLTree<T>::buildFromSorted(const std::vector<T> &key
 }
 
 template <typename T>
-int AVLTree<T>::getBalance(Node *node) const
+int MultiSet<T>::getBalance(Node *node) const
 {
     return (node == nullptr) ? 0 : height(node->left) - height(node->right);
 }
 
 template <typename T>
-typename AVLTree<T>::Node *AVLTree<T>::rotateRight(Node *y)
+typename MultiSet<T>::Node *MultiSet<T>::rotateRight(Node *y)
 {
     Node *x = y->left;
     Node *T2 = x->right;
@@ -181,7 +183,7 @@ typename AVLTree<T>::Node *AVLTree<T>::rotateRight(Node *y)
 }
 
 template <typename T>
-typename AVLTree<T>::Node *AVLTree<T>::rotateLeft(Node *x)
+typename MultiSet<T>::Node *MultiSet<T>::rotateLeft(Node *x)
 {
     Node *y = x->right;
     Node *T2 = y->left;
@@ -196,7 +198,7 @@ typename AVLTree<T>::Node *AVLTree<T>::rotateLeft(Node *x)
 }
 
 template <typename T>
-typename AVLTree<T>::Node *AVLTree<T>::insert(Node *node, const T &key, size_t amount)
+typename MultiSet<T>::Node *MultiSet<T>::insert(Node *node, const T &key, size_t amount)
 {
     if (node == nullptr)
     {
@@ -259,7 +261,7 @@ typename AVLTree<T>::Node *AVLTree<T>::insert(Node *node, const T &key, size_t a
 }
 
 template <typename T>
-typename AVLTree<T>::Node *AVLTree<T>::remove(Node *node, const T &key, size_t amount)
+typename MultiSet<T>::Node *MultiSet<T>::remove(Node *node, const T &key, size_t amount)
 {
     if (node == nullptr)
         return node;
@@ -349,7 +351,7 @@ typename AVLTree<T>::Node *AVLTree<T>::remove(Node *node, const T &key, size_t a
 }
 
 template <typename T>
-typename AVLTree<T>::Node *AVLTree<T>::getMinNode(Node *node) const
+typename MultiSet<T>::Node *MultiSet<T>::getMinNode(Node *node) const
 {
     Node *current = node;
     while (current->left != nullptr)
@@ -358,7 +360,7 @@ typename AVLTree<T>::Node *AVLTree<T>::getMinNode(Node *node) const
 }
 
 template <typename T>
-typename AVLTree<T>::Node *AVLTree<T>::getMaxNode(Node *node) const
+typename MultiSet<T>::Node *MultiSet<T>::getMaxNode(Node *node) const
 {
     Node *current = node;
     while (current->right != nullptr)
@@ -367,19 +369,19 @@ typename AVLTree<T>::Node *AVLTree<T>::getMaxNode(Node *node) const
 }
 
 template <typename T>
-void AVLTree<T>::updateMinNode()
+void MultiSet<T>::updateMinNode()
 {
     min_node = (root == nullptr) ? nullptr : getMinNode(root);
 }
 
 template <typename T>
-void AVLTree<T>::updateMaxNode()
+void MultiSet<T>::updateMaxNode()
 {
     max_node = (root == nullptr) ? nullptr : getMaxNode(root);
 }
 
 template <typename T>
-typename AVLTree<T>::Node *AVLTree<T>::lower_bound(Node *node, const T &key) const
+typename MultiSet<T>::Node *MultiSet<T>::lower_bound(Node *node, const T &key) const
 {
     Node *ans = nullptr;
     while (node)
@@ -398,7 +400,7 @@ typename AVLTree<T>::Node *AVLTree<T>::lower_bound(Node *node, const T &key) con
 }
 
 template <typename T>
-void AVLTree<T>::clear(Node *node)
+void MultiSet<T>::clear(Node *node)
 {
     if (node == nullptr)
         return;
@@ -408,7 +410,7 @@ void AVLTree<T>::clear(Node *node)
 }
 
 template <typename T>
-void AVLTree<T>::inorder(Node *node, std::vector<T> &result) const
+void MultiSet<T>::inorder(Node *node, std::vector<T> &result) const
 {
     if (node)
     {
@@ -424,7 +426,7 @@ void AVLTree<T>::inorder(Node *node, std::vector<T> &result) const
 // Public Methods
 template <typename T>
 template <typename Iterator>
-void AVLTree<T>::insert(Iterator begin, Iterator end)
+void MultiSet<T>::insert(Iterator begin, Iterator end)
 {
     // If bulk is small compared to tree size, do individual insertions
     size_t bulk_size = std::distance(begin, end);
@@ -460,19 +462,19 @@ void AVLTree<T>::insert(Iterator begin, Iterator end)
 }
 
 template <typename T>
-void AVLTree<T>::insert(const T &key)
+void MultiSet<T>::insert(const T &key)
 {
     root = insert(root, key, 1);
 }
 
 template <typename T>
-void AVLTree<T>::insert_multiple(const T &key, size_t amount)
+void MultiSet<T>::insert_multiple(const T &key, size_t amount)
 {
     root = insert(root, key, amount);
 }
 
 template <typename T>
-void AVLTree<T>::remove(const T &key)
+void MultiSet<T>::remove(const T &key)
 {
     Node *lb = lower_bound(root, key);
     if (lb == nullptr || lb->key != key)
@@ -483,7 +485,7 @@ void AVLTree<T>::remove(const T &key)
 }
 
 template <typename T>
-void AVLTree<T>::remove_multiple(const T &key, size_t amount)
+void MultiSet<T>::remove_multiple(const T &key, size_t amount)
 {
     if (amount <= 0)
         return;
@@ -496,7 +498,7 @@ void AVLTree<T>::remove_multiple(const T &key, size_t amount)
 }
 
 template <typename T>
-void AVLTree<T>::remove_all(const T &key)
+void MultiSet<T>::remove_all(const T &key)
 {
     Node *lb = lower_bound(root, key);
     if (lb == nullptr || lb->key != key)
@@ -507,7 +509,7 @@ void AVLTree<T>::remove_all(const T &key)
 }
 
 template <typename T>
-size_t AVLTree<T>::count(const T &key) const
+size_t MultiSet<T>::count(const T &key) const
 {
     Node *node = lower_bound(root, key);
     if (node && node->key == key)
@@ -518,14 +520,14 @@ size_t AVLTree<T>::count(const T &key) const
 }
 
 template <typename T>
-bool AVLTree<T>::contains(const T &key) const
+bool MultiSet<T>::contains(const T &key) const
 {
     Node *node = lower_bound(root, key);
     return node != nullptr && node->key == key;
 }
 
 template <typename T>
-T AVLTree<T>::min() const
+T MultiSet<T>::min() const
 {
     if (!min_node)
         throw std::runtime_error("Tree is empty");
@@ -533,7 +535,7 @@ T AVLTree<T>::min() const
 }
 
 template <typename T>
-T AVLTree<T>::max() const
+T MultiSet<T>::max() const
 {
     if (!max_node)
         throw std::runtime_error("Tree is empty");
@@ -541,7 +543,7 @@ T AVLTree<T>::max() const
 }
 
 template <typename T>
-T AVLTree<T>::pop_min()
+T MultiSet<T>::pop_min()
 {
     if (!min_node)
         throw std::runtime_error("Tree is empty");
@@ -551,7 +553,7 @@ T AVLTree<T>::pop_min()
 }
 
 template <typename T>
-T AVLTree<T>::pop_max()
+T MultiSet<T>::pop_max()
 {
     if (!max_node)
         throw std::runtime_error("Tree is empty");
@@ -561,25 +563,25 @@ T AVLTree<T>::pop_max()
 }
 
 template <typename T>
-size_t AVLTree<T>::size() const
+size_t MultiSet<T>::size() const
 {
     return total_count;
 }
 
 template <typename T>
-bool AVLTree<T>::empty() const
+bool MultiSet<T>::empty() const
 {
     return total_count == 0;
 }
 
 template <typename T>
-size_t AVLTree<T>::distinct_size() const
+size_t MultiSet<T>::distinct_size() const
 {
     return distinct_count;
 }
 
 template <typename T>
-void AVLTree<T>::clear()
+void MultiSet<T>::clear()
 {
     clear(root);
     root = nullptr;
@@ -590,11 +592,13 @@ void AVLTree<T>::clear()
 }
 
 template <typename T>
-std::vector<T> AVLTree<T>::to_vector() const
+std::vector<T> MultiSet<T>::to_vector() const
 {
     std::vector<T> result;
     inorder(root, result);
     return result;
 }
 
-#endif
+} // namespace AVLTree
+
+#endif // MULTISET_HPP

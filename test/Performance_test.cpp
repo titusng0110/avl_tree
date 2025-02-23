@@ -61,7 +61,7 @@ void benchmark_operations(size_t data_size)
     // Test initialization
     {
         Timer t1;
-        AVLTree<int> avl(initial_data.begin(), initial_data.end());
+        AVLTree::MultiSet<int> avl(initial_data.begin(), initial_data.end());
         avl_time = t1.elapsed();
         avl.clear();
     }
@@ -75,7 +75,7 @@ void benchmark_operations(size_t data_size)
 
     // Test insertions
     {
-        AVLTree<int> avl(initial_data.begin(), initial_data.end());
+        AVLTree::MultiSet<int> avl(initial_data.begin(), initial_data.end());
         Timer t1;
         for (int val : test_data)
         {
@@ -98,7 +98,7 @@ void benchmark_operations(size_t data_size)
 
     // Test multiple insertions
     {
-        AVLTree<int> avl(initial_data.begin(), initial_data.end());
+        AVLTree::MultiSet<int> avl(initial_data.begin(), initial_data.end());
         Timer t1;
         for (int val : test_data)
         {
@@ -124,7 +124,7 @@ void benchmark_operations(size_t data_size)
 
     // Test removals
     {
-        AVLTree<int> avl(initial_data.begin(), initial_data.end());
+        AVLTree::MultiSet<int> avl(initial_data.begin(), initial_data.end());
         Timer t1;
         for (int val : test_data)
         {
@@ -151,7 +151,7 @@ void benchmark_operations(size_t data_size)
 
     // Test search operations
     {
-        AVLTree<int> avl(initial_data.begin(), initial_data.end());
+        AVLTree::MultiSet<int> avl(initial_data.begin(), initial_data.end());
         Timer t1;
         for (int val : test_data)
         {
@@ -174,7 +174,7 @@ void benchmark_operations(size_t data_size)
 
     // Test count operations
     {
-        AVLTree<int> avl(initial_data.begin(), initial_data.end());
+        AVLTree::MultiSet<int> avl(initial_data.begin(), initial_data.end());
         Timer t1;
         for (int val : test_data)
         {
@@ -197,7 +197,7 @@ void benchmark_operations(size_t data_size)
 
     // Test min/max operations
     {
-        AVLTree<int> avl(initial_data.begin(), initial_data.end());
+        AVLTree::MultiSet<int> avl(initial_data.begin(), initial_data.end());
         Timer t1;
         for (int i = 0; i < 25000; ++i)
         {
@@ -222,7 +222,7 @@ void benchmark_operations(size_t data_size)
 
     // Test pop_min/pop_max operations
     {
-        AVLTree<int> avl(initial_data.begin(), initial_data.end());
+        AVLTree::MultiSet<int> avl(initial_data.begin(), initial_data.end());
         Timer t1;
         for (int i = 0; i < 25000; ++i)
         {

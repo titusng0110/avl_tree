@@ -24,7 +24,7 @@ void test_avl_tree()
     // Test constructor and bulk insertion
     std::cout << "\nTesting constructors and bulk insertion:" << std::endl;
     std::vector<int> init_data = {5, 3, 7, 2, 4, 6, 8, 3, 5, 7};
-    AVLTree<int> avl1(init_data.begin(), init_data.end());
+    AVLTree::MultiSet<int> avl1(init_data.begin(), init_data.end());
     std::multiset<int> reference(init_data.begin(), init_data.end());
 
     assert(avl1.size() == reference.size());
@@ -75,7 +75,7 @@ void test_avl_tree()
 
     // Stress test with random operations
     std::cout << "\nPerforming stress test with random operations:" << std::endl;
-    AVLTree<int> avl2;
+    AVLTree::MultiSet<int> avl2;
     std::multiset<int> reference2;
     std::random_device rd;
     std::mt19937 gen(rd());
